@@ -6,7 +6,7 @@ async function requestPollutionData() {
   const response = await fetch("https://api.waqi.info/feed/" + cityQuery + "/?token=" + API_KEY);
   const data = await response.json();
 
-  console.log(data.data.city.name + " " + data.data.time.tz);
+  console.log(data.data.city.name + " " + data.data.time.tz + " " + data.data.aqi);
 }
 
 requestPollutionData()
