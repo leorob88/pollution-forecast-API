@@ -20,6 +20,7 @@
   "homepage": "https://github.com/leorob88/pollution-forecast-api#readme",
   "devDependencies": {
     "dotenv-webpack": "^7.0.3",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.60.0",
     "webpack-cli": "^4.9.1",

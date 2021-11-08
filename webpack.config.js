@@ -6,6 +6,18 @@ const path = require('path');
 module.exports = (env, argv) => {
   const entryPath = argv.mode === 'development' ? './src/index_dev.js' : './src/index.js'
   return {
+    module: {
+      rules: [
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+          use: [
+            {
+              loader: 'file-loader',
+            },
+          ],
+        },
+      ],
+    },
     entry: {
       main: path.resolve(__dirname, entryPath),
     },
