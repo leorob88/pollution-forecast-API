@@ -1,1 +1,1 @@
-!async function(){const n=await fetch("/.netlify/functions/lambda"),a=await n.json();console.log(a)}();
+!async function(){const a=await fetch("/.netlify/functions/lambda"),t=await a.json();console.log(t.data.city.name+" "+t.data.time.tz+" "+t.data.aqi)}();
