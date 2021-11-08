@@ -1,4 +1,4 @@
-
+//import img from "./project-icon.png";
 
 async function requestPollutionData() {
 
