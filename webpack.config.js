@@ -34,6 +34,7 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         title: "Pollution Forecast API",
         template: path.resolve(__dirname, './src/index.html'),
+        favicon: path.resolve(__dirname, './src/project-icon.ico')
       }),
       new Dotenv()
     ]
