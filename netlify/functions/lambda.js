@@ -6,8 +6,8 @@ exports.handler = async event => {
   const fetch = require('cross-fetch');
   const response = await fetch("https://api.waqi.info/feed/" + /*cityQuery*/ "here" + "/?token=" + API_KEY);
   const data = await response.json();
-  
-  console.log(data);
+
+  //console.log(data);
 
   const pass = (body) => {
     return {
