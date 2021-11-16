@@ -23,18 +23,34 @@ async function requestPollutionData() {
 
   //navigator.geolocation.getCurrentPosition(infos, error, options);
 
-  var cityQuery = "Sona";
+  var cityQuery = document.getElementById("query").value;
   const response = await fetch("https://api.waqi.info/feed/" + /*cityQuery*/ "here" + "/?token=" + API_KEY);
   const data = await response.json();
 
   if (data.data == "Unknown station"){
-    console.log("Il luogo cercato non ha stazioni di rilevamento disponibili.");
+    document.getElementById("answer").innerHTML = "The location you searched for has no stations for pollution detection.";
   }
   else{
-    //console.log(data.data.city.name + " " + data.data.time.tz + " " + data.data.aqi);
+    var aqi = data.data.aqi;
+    var more;
+    if (aqi > 300){
+      more = "hazardous";
+    }else if (aqi > 200) {
+      more = "very unhealthy";
+    }else if (aqi > 150) {
+      more = "unhealthy"
+    }else if (aqi > 100) {
+      more = "unhealthy for sensitive groups"
+    }else if (aqi > 50) {
+      more = "moderate"
+    }else {
+      more = "good"
+    }
+    //document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${more}.`;
     const near = await fetch("https://api.waqi.info/feed/geo:" + data.data.city.geo[0] + ";" + data.data.city.geo[1] + "/?token=" + API_KEY);
     const station = await near.json();
-    console.log(station.data.city.name);
+    document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${station.data.city.name}. The estimated AQI has a value of ${station.data.aqi}. The pollution rate is ${more}.`;
+    document.getElementById("answer").innerHTML += ` For further details, you can check out the reference website infos <a href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
   }
 }
 
