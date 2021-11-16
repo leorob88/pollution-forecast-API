@@ -1,20 +1,20 @@
 exports.handler = async event => {
 
-  const API_KEY =  process.env.API_KEY;
+  const API_KEY =  process.env.API_KEY
 
-  var cityQuery = document.getElementById("query").value;
-  const fetch = require('cross-fetch');
-  const response = await fetch("https://api.waqi.info/feed/" + cityQuery /*"here"*/ + "/?token=" + API_KEY);
-  const data = await response.json();
+  var cityQuery = document.getElementById("query").value
+  const fetch = require('cross-fetch')
+  const response = await fetch("https://api.waqi.info/feed/" + cityQuery /*"here"*/ + "/?token=" + API_KEY)
+  const data = await response.json()
 
-  console.log(data);
+  console.log(data)
 
   const pass = (body) => {
     return {
       statusCode: 200,
       body: JSON.stringify(body)
     }
-  };
+  }
 
-  return pass(data);
+  return pass(data)
 }
