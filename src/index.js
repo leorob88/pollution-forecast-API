@@ -1,7 +1,7 @@
 
 async function callLambdaFunction() {
 
-  var cityQuery = /*document.getElementById("query").value*/ "Londra";
+  var cityQuery = /*document.getElementById("query").value*/ "London";
   const response = await fetch("/.netlify/functions/lambda?name=${cityQuery}");
   const data = await response.json();
 
