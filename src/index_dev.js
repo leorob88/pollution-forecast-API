@@ -38,13 +38,13 @@ async function requestPollutionData() {
     }else if (aqi > 200) {
       more = "very unhealthy";
     }else if (aqi > 150) {
-      more = "unhealthy"
+      more = "unhealthy";
     }else if (aqi > 100) {
-      more = "unhealthy for sensitive groups"
+      more = "unhealthy for sensitive groups";
     }else if (aqi > 50) {
-      more = "moderate"
+      more = "moderate";
     }else {
-      more = "good"
+      more = "good";
     }
     //document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${more}.`;
     const near = await fetch("https://api.waqi.info/feed/geo:" + data.data.city.geo[0] + ";" + data.data.city.geo[1] + "/?token=" + API_KEY);
@@ -54,4 +54,4 @@ async function requestPollutionData() {
   }
 }
 
-requestPollutionData()
+requestPollutionData();

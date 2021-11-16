@@ -1,8 +1,8 @@
-exports.handler = async event => {
+exports.handler = async (event, context) => {
 
   const API_KEY =  process.env.API_KEY;
 
-  var cityQuery = /*document.getElementById("query").value*/ "Milano";
+  var cityQuery = event.cityQuery;
   const fetch = require('cross-fetch');
   const response = await fetch("https://api.waqi.info/feed/" + cityQuery /*"here"*/ + "/?token=" + API_KEY);
   const data = await response.json();

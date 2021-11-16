@@ -1,6 +1,8 @@
 
 async function callLambdaFunction() {
-  const response = await fetch("/.netlify/functions/lambda");
+
+  var cityQuery = /*document.getElementById("query").value*/ "Milano";
+  const response = await fetch("/.netlify/functions/lambda?name=${cityQuery}");
   const data = await response.json();
 
   if (data.data == "Unknown station"){
