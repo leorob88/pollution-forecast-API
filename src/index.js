@@ -4,7 +4,7 @@ async function callLambdaFunction() {
   var cityQuery = /*document.getElementById("query").value*/ "London";
   const response = await fetch("/.netlify/functions/lambda?name=${cityQuery}");
   const data = await response.json();
-
+  console.log(data);
   if (data.data == "Unknown station"){
     console.log/*document.getElementById("answer").innerHTML = */("The location you searched for has no stations for pollution detection.");
   }
