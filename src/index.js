@@ -5,7 +5,7 @@ var check = 0;
 var queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
 
 async function callLambdaFunction(queryarg) {
-
+  console.log(check);
   const response = await fetch(`/.netlify/functions/lambda?name=${queryarg}`);
   const data = await response.json();
 
