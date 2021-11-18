@@ -16,6 +16,7 @@ async function callLambdaFunction(queryarg) {
       document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
       function infos(pos) {
         var crd = pos.coords;
+        queryarg = `geo:${crd.latitude};${crd.longitude}`;
         console.log(pos);
         console.log('Current position:');
         console.log(`Latitude : ${crd.latitude}`);
@@ -32,7 +33,6 @@ async function callLambdaFunction(queryarg) {
       };
 
       navigator.geolocation.getCurrentPosition(infos, error, options);
-      queryarg = `geo:${crd.latitude};${crd.longitude}`;
       check = 1;
       callLambdaFunction(queryarg);
     }else{
