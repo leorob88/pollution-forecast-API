@@ -20,7 +20,7 @@ var options = {
 navigator.geolocation.getCurrentPosition(infos, error, options);
 
 var check = 0;
-var queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
+var queryarg = /*document.getElementById("query").value*/`geo:${crd.latitude};${crd.longitude}`;
 
 async function callLambdaFunction(queryarg) {
 
@@ -30,14 +30,14 @@ async function callLambdaFunction(queryarg) {
   console.log(data);
 
   if (data.data == "Unknown station"){
-    if (check == 0){
+    // if (check == 0){
       document.getElementById("answer").innerHTML = "The location you searched for has no stations for pollution detection.";
-      queryarg = `geo:${crd.latitude};${crd.longitude}`;
-      check = 1;
-      callLambdaFunction(queryarg);
-    }else{
-      document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";
-    }
+    //   queryarg = `geo:${crd.latitude};${crd.longitude}`;
+    //   check = 1;
+    //   callLambdaFunction(queryarg);
+    // }else{
+    //   document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";
+    // }
   }
   else{
     var aqi = data.data.aqi;
