@@ -1,7 +1,7 @@
 
 var crd;
-function infos(pos) {
-  crd = pos.coords;
+async function infos(pos) {
+  crd = await pos.coords;
   console.log(pos);
   console.log('Current position:');
   console.log(`Latitude : ${crd.latitude}`);
