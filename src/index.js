@@ -1,4 +1,4 @@
-  var crd;
+  var crd = "";
   function infos(pos) {
     crd = pos.coords;
     console.log(pos);
