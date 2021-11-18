@@ -1,24 +1,26 @@
-  var crd;
-  function infos(pos) {
-    crd = pos.coords;
-    console.log(pos);
-    console.log('Current position:');
-    console.log(`Latitude : ${crd.latitude}`);
-    console.log(`Longitude: ${crd.longitude}`);
-    console.log(`(Accuracy: about ${crd.accuracy} meters.`);
-  }
-  function error(err) {
-    console.warn(`Error(${err.code}): ${err.message}`);
-  }
-  var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
 
-  navigator.geolocation.getCurrentPosition(infos, error, options);
+var crd;
+function infos(pos) {
+  crd = pos.coords;
+  console.log(pos);
+  console.log('Current position:');
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`(Accuracy: about ${crd.accuracy} meters.`);
+}
+function error(err) {
+  console.warn(`Error(${err.code}): ${err.message}`);
+}
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
 
-  var queryarg = /*document.getElementById("query").value*/`geo:${crd.latitude};${crd.longitude}`;
+navigator.geolocation.getCurrentPosition(infos, error, options);
+
+var check = 0;
+var queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
 
 async function callLambdaFunction() {
 
@@ -28,7 +30,14 @@ async function callLambdaFunction() {
   console.log(data);
 
   if (data.data == "Unknown station"){
-    document.getElementById("answer").innerHTML = "The location you searched for has no stations for pollution detection.";
+    if (check == 0){
+      document.getElementById("answer").innerHTML = "The location you searched for has no stations for pollution detection.";
+      queryarg = `geo:${crd.latitude};${crd.longitude}`;
+      check = 1;
+      callLambdaFunction();
+    }else{
+      document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";
+    }
   }
   else{
     var aqi = data.data.aqi;
