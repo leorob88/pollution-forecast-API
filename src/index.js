@@ -22,7 +22,7 @@ navigator.geolocation.getCurrentPosition(infos, error, options);
 var check = 0;
 var queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
 
-async function callLambdaFunction() {
+async function callLambdaFunction(queryarg) {
 
   const response = await fetch(`/.netlify/functions/lambda?name=${queryarg}`);
   const data = await response.json();
@@ -34,7 +34,7 @@ async function callLambdaFunction() {
       document.getElementById("answer").innerHTML = "The location you searched for has no stations for pollution detection.";
       queryarg = `geo:${crd.latitude};${crd.longitude}`;
       check = 1;
-      callLambdaFunction();
+      callLambdaFunction(queryarg);
     }else{
       document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";
     }
@@ -61,4 +61,4 @@ async function callLambdaFunction() {
   }
 }
 
-callLambdaFunction();
+callLambdaFunction(queryarg);
