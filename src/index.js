@@ -1,24 +1,24 @@
 
-  // function infos(pos) {
-  //   var crd = pos.coords;
-  //   console.log(pos);
-  //   console.log('Current position:');
-  //   console.log(`Latitude : ${crd.latitude}`);
-  //   console.log(`Longitude: ${crd.longitude}`);
-  //   console.log(`(Accuracy: about ${crd.accuracy} meters.`);
-  // }
-  // function error(err) {
-  //   console.warn(`Error(${err.code}): ${err.message}`);
-  // }
-  // var options = {
-  //   enableHighAccuracy: true,
-  //   timeout: 5000,
-  //   maximumAge: 0
-  // };
-  //
-  // navigator.geolocation.getCurrentPosition(infos, error, options);
+  function infos(pos) {
+    var crd = pos.coords;
+    console.log(pos);
+    console.log('Current position:');
+    console.log(`Latitude : ${crd.latitude}`);
+    console.log(`Longitude: ${crd.longitude}`);
+    console.log(`(Accuracy: about ${crd.accuracy} meters.`);
+  }
+  function error(err) {
+    console.warn(`Error(${err.code}): ${err.message}`);
+  }
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
 
-  var queryarg = document.getElementById("query").value;
+  navigator.geolocation.getCurrentPosition(infos, error, options);
+
+  var queryarg = /*document.getElementById("query").value*/`geo:${crd.latitude};${crd.longitude}`;
 
 async function callLambdaFunction() {
 
