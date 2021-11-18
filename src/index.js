@@ -1,6 +1,6 @@
-
+  var crd;
   function infos(pos) {
-    var crd = pos.coords;
+    crd = pos.coords;
     console.log(pos);
     console.log('Current position:');
     console.log(`Latitude : ${crd.latitude}`);
