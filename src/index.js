@@ -1,8 +1,28 @@
 
+  // function infos(pos) {
+  //   var crd = pos.coords;
+  //   console.log(pos);
+  //   console.log('Current position:');
+  //   console.log(`Latitude : ${crd.latitude}`);
+  //   console.log(`Longitude: ${crd.longitude}`);
+  //   console.log(`(Accuracy: about ${crd.accuracy} meters.`);
+  // }
+  // function error(err) {
+  //   console.warn(`Error(${err.code}): ${err.message}`);
+  // }
+  // var options = {
+  //   enableHighAccuracy: true,
+  //   timeout: 5000,
+  //   maximumAge: 0
+  // };
+  //
+  // navigator.geolocation.getCurrentPosition(infos, error, options);
+
+  var queryarg = document.getElementById("query").value;
+
 async function callLambdaFunction() {
 
-  var cityQuery = /*document.getElementById("query").value*/ "here";
-  const response = await fetch(`/.netlify/functions/lambda?name=${cityQuery}`);
+  const response = await fetch(`/.netlify/functions/lambda?name=${queryarg}`);
   const data = await response.json();
 
   console.log(data);
