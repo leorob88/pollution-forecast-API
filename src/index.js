@@ -1,7 +1,7 @@
 
 var crd;
-async function infos(pos) {
-  crd = await pos.coords;
+function infos(pos) {
+  crd = pos.coords;
   console.log(pos);
   console.log('Current position:');
   console.log(`Latitude : ${crd.latitude}`);
@@ -20,7 +20,7 @@ var options = {
 navigator.geolocation.getCurrentPosition(infos, error, options);
 
 var check = 0;
-var queryarg = /*document.getElementById("query").value*/`geo:${crd.latitude};${crd.longitude}`;
+var queryarg = /*document.getElementById("query").value*/ `geo:${crd.latitude};${crd.longitude}`;
 
 async function callLambdaFunction() {
 
@@ -56,7 +56,7 @@ async function callLambdaFunction() {
       more = "good";
     }
     // document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${more}.`;
-    document.getElementById("answer").innerHTML += `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
+    document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
     document.getElementById("answer").innerHTML += ` For further details, you can check out the reference website infos <a href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
   }
 }
