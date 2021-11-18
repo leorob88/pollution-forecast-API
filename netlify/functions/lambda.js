@@ -7,7 +7,7 @@ exports.handler = async event => {
   var cityQuery = event.queryStringParameters.name;
   const response = await fetch("https://api.waqi.info/feed/" + cityQuery + "/?token=" + API_KEY);
   const data = await response.json();
-
+  
   console.log(data);
 
   const pass = (body) => {
