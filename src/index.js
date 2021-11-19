@@ -15,27 +15,17 @@ async function callLambdaFunction(queryarg) {
   if (data.data == "Unknown station"){
     if (check == 0){
       document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
-      function infos(pos) {
+      const locate = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
+      locate.then(pos => {
         var crd = pos.coords;
-        queryarg = `geo:${crd.latitude};${crd.longitude}`;
         console.log(pos);
         console.log('Current position:');
         console.log(`Latitude : ${crd.latitude}`);
         console.log(`Longitude: ${crd.longitude}`);
         console.log(`(Accuracy: about ${crd.accuracy} meters.`);
-      }
-      function error(err) {
-        console.warn(`Error(${err.code}): ${err.message}`);
-      }
-      var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
-
-      navigator.geolocation.getCurrentPosition(infos, error, options);
-      check = 1;
-      callLambdaFunction(queryarg);
+        check = 1;
+        callLambdaFunction(`geo:${crd.latitude};${crd.longitude}`);
+      })
     }else{
       document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";
     }
