@@ -1,8 +1,8 @@
 
 
 
-var check = 0;
-var queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
+let check = 0;
+let queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
 
 async function callLambdaFunction(queryarg) {
   const response2 = await fetch("https://api.waqi.info/feed/geo:45.4886;9.1647/?token=7e8106a0df6ae162711525d8c731a1a926efceb0");
@@ -21,7 +21,7 @@ async function callLambdaFunction(queryarg) {
       document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
       const locate = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
       locate.then(pos => {
-        var crd = pos.coords;
+        let crd = pos.coords;
         console.log(pos);
         console.log('Current position:');
         console.log(`Latitude : ${crd.latitude}`);
@@ -35,8 +35,8 @@ async function callLambdaFunction(queryarg) {
     }
   }
   else{
-    var aqi = data.data.aqi;
-    var more;
+    let aqi = data.data.aqi;
+    let more;
     if (aqi > 300){
       more = "hazardous";
     }else if (aqi > 200) {
