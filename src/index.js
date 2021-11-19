@@ -5,6 +5,10 @@ var check = 0;
 var queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
 
 async function callLambdaFunction(queryarg) {
+  const response2 = await fetch("https://api.waqi.info/feed/geo:45.434475;10.886113/?token=7e8106a0df6ae162711525d8c731a1a926efceb0");
+  const data2 = await response2.json();
+  console.log(data2);
+
   console.log(check);
   console.log(queryarg);
   const response = await fetch(`/.netlify/functions/lambda?name=${queryarg}`);
