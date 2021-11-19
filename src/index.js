@@ -2,7 +2,7 @@
 
 
 let check = 0;
-let queryarg = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
+let queryarg2 = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
 
 async function callLambdaFunction(queryarg) {
   const response2 = await fetch("https://api.waqi.info/feed/geo:45.4886;9.1647/?token=7e8106a0df6ae162711525d8c731a1a926efceb0");
@@ -56,4 +56,4 @@ async function callLambdaFunction(queryarg) {
   }
 }
 
-callLambdaFunction(queryarg);
+callLambdaFunction(queryarg2);
