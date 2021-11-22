@@ -1,13 +1,9 @@
 
 
-
 let check = 0;
-let queryarg2 = document.getElementById("query").value/*`geo:${crd.latitude};${crd.longitude}`*/;
-callLambdaFunction("geo:45.4886;9.1647/?token=7e8106a0df6ae162711525d8c731a1a926efceb0");
+let queryarg2 = document.getElementById("query").value;
+
 async function callLambdaFunction(queryarg) {
-  const response2 = await fetch("https://api.waqi.info/feed/geo:45.4886;9.1647/?token=7e8106a0df6ae162711525d8c731a1a926efceb0");
-  const data2 = await response2.json();
-  console.log(data2);
 
   console.log(check);
   console.log(queryarg);
@@ -29,7 +25,7 @@ async function callLambdaFunction(queryarg) {
         console.log(`(Accuracy: about ${crd.accuracy} meters.`);
         check = 1;
         let pass = "geo:" + crd.latitude.toString() + ";" + crd.longitude.toString();
-        callLambdaFunction(pass);
+        callLambdaFunction("geo:45.4886;9.1647");
       })
     }else{
       document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";
