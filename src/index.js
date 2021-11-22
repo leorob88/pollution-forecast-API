@@ -28,7 +28,8 @@ async function callLambdaFunction(queryarg) {
         console.log(`Longitude: ${crd.longitude}`);
         console.log(`(Accuracy: about ${crd.accuracy} meters.`);
         check = 1;
-        callLambdaFunction(`geo:${crd.latitude};${crd.longitude}`);
+        let pass = "geo:" + crd.latitude.toString() + ";" + crd.longitude.toString();
+        callLambdaFunction(pass);
       })
     }else{
       document.getElementById("answer").innerHTML += " I also tried to locate your position but still it has no stations for pollution detection.";

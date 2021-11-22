@@ -8,8 +8,6 @@ exports.handler = async event => {
   const response = await fetch("https://api.waqi.info/feed/" + queryarg + "/?token=" + API_KEY);
   const data = await response.json();
 
-  console.log(data);
-
   const pass = (body) => {
     return {
       statusCode: 200,
