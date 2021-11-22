@@ -9,7 +9,7 @@ function locating(location){
     //if response is not found,
     if (data.data == "Unknown station"){
       //if search by text
-      if (location.indexOf(":") == -1){
+      if (location.indexOf("city=") > -1){
         //tell user input text result was not found
         document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
       }
@@ -38,7 +38,7 @@ function locating(location){
         more = "good";
       }
       //if search by text
-      if (location.indexOf(":") == -1){
+      if (location.indexOf("city=") > -1){
         //tell user the result and quality for their searched position
         document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${more}.`;
       }
