@@ -65,8 +65,8 @@ function geo(){
   const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
   signal.then(pos => {
     //store coordinates
-    const latit = pos.coordinates.latitude;
-    const longi = pos.coordinates.longitude;
+    const latit = pos.coords.latitude;
+    const longi = pos.coords.longitude;
     //calls main function with input target given by button (stored coordinates above)
     locating(`latit=${latit}&longi=${longi}`);
   });
