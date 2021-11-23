@@ -69,7 +69,7 @@ function geo(){
     const longi = pos.coordinates.longitude;
     //calls main function with input target given by button (stored coordinates above)
     locating(`latit=${latit}&longi=${longi}`);
-  };
+  });
 }
 
 //click event handlers for buttons
