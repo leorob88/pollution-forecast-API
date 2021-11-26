@@ -15,19 +15,19 @@ async function requestPollutionData() {
   });
 
   //calculate distance between 2 coordinates (45;9 -- 46;11)
-  const R = 6371e3; // metres
-  const φ1 = 45.470501 * Math.PI/180; // φ, λ in radians
-  const φ2 = 46.5338368 * Math.PI/180;
-  const Δφ = (46.5338368 - 45.470501) * Math.PI/180;
-  const Δλ = (11.2427008 - 9.19746075) * Math.PI/180;
+  const radius = 6371e3; // metres
+  const diam1 = 45.470501 * Math.PI/180; // φ, λ in radians
+  const diam2 = 46.5338368 * Math.PI/180;
+  const diff1 = (46.5338368 - 45.470501) * Math.PI/180;
+  const diff2 = (11.2427008 - 9.19746075) * Math.PI/180;
 
-  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-            Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const a = Math.sin(diff1/2) * Math.sin(diff1/2) +
+            Math.cos(diam1) * Math.cos(diam2) *
+            Math.sin(diff2/2) * Math.sin(diff2/2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
-  const d = R * c / 1000; // in metres
-  console.log(d + " chilometri");
+  const d = radius * c / 1000; // in kilometres
+  console.log(d + " kilometers");
 
   const response = await fetch("https://api.waqi.info/search/?keyword=" + cityQuery /*"here"*/ + "&token=" + API_KEY);
   const data = await response.json();

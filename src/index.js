@@ -1,6 +1,7 @@
 
 //main function for fetch
 function locating(location){
+  console.log(location);
   //fetch infos with given input via buttons
   fetch(`/.netlify/functions/lambda?${location}`)
   .then(response => response.json())
@@ -69,6 +70,7 @@ function geo(){
     const longi = pos.coords.longitude;
     //calls main function with input target given by button (stored coordinates above)
     locating(`latit=${latit}&longi=${longi}`);
+    console
   });
 }
 
