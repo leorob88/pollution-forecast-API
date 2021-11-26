@@ -90,7 +90,10 @@ function ge(){
 
 //function to call fetch by geoloc input
 function geo(){
-    locating(`latit=${ge()[0]}&longi=${ge()[1]}`);
+    const coord = ge();
+    const latitu = coord[0];
+    const longit = coord[1];
+    locating(`latit=${latitu}&longi=${longit}`);
 }
 
 //click event handlers for buttons
