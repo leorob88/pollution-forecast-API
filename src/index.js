@@ -77,23 +77,17 @@ function select(input){
   locating(`city=${input}`);
 }
 
-function ge(){
+//function to call fetch by geoloc input
+function geo(){
+  //tries to get current user position
   const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
   signal.then(pos => {
     //store coordinates
     const latit = pos.coords.latitude;
     const longi = pos.coords.longitude;
     //calls main function with input target given by button (stored coordinates above)
-    return [latit, longi];
+    locating(`latit=${latit}&longi=${longi}`);
   });
-}
-
-//function to call fetch by geoloc input
-function geo(){
-    const coord = ge();
-    const latitu = coord[0];
-    const longit = coord[1];
-    locating(`latit=${latitu}&longi=${longit}`);
 }
 
 //click event handlers for buttons
