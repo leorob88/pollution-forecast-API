@@ -48,6 +48,23 @@ function locating(location){
         //tell user the result and quality for their nearest position
         document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
       }
+      //calculate distance between 2 coordinates (45;9 -- 46;11)
+      const radius = 6371e3; // metres
+      const lat1 = data.data.city.geo[0];
+      const lon1 = data.data.city.geo[1];
+      const lat2 = location.substring(6, location.indexOf("&longi")).toNumber();
+      const start2 = location.indexOf("&longi") + 6;
+      const lon2 = location.substring(start2, location.length - start2).toNumber();
+      const diam1 = lat1 * Math.PI/180;
+      const diam2 = lat2 * Math.PI/180;
+      const diff1 = (lat2 - lat1) * Math.PI/180;
+      const diff2 = (lon2 - lon1) * Math.PI/180;
+      const a = Math.sin(diff1/2) * Math.sin(diff1/2) +
+                Math.cos(diam1) * Math.cos(diam2) *
+                Math.sin(diff2/2) * Math.sin(diff2/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const d = radius * c / 1000; // in kilometres
+      console.log(d + " kilometers");
     }
     //optional further info
     document.getElementById("answer").innerHTML += ` For further details, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
