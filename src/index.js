@@ -63,7 +63,7 @@ function locating(location){
                   const d = radius * c / 1000; // in kilometres
         console.log(d + " kilometers");
         //tell user the result and quality for their nearest position
-        document.getElementById("answer").innerHTML = `La stazione di rilevamento più vicina a te è a ${data.data.city.name}. Si trova a circa ${d} chilometri.`;
+        document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
       }
     }
     //optional further info
