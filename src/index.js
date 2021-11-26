@@ -55,6 +55,7 @@ function locating(location){
       const lat2 = location.substring(6, location.indexOf("&longi"));
       const start2 = location.indexOf("&longi") + 6;
       const lon2 = location.substring(start2, location.length - start2);
+      console.log(lat2 + " " + lon2);
       const diam1 = lat1 * Math.PI/180;
       const diam2 = lat2 * Math.PI/180;
       const diff1 = (lat2 - lat1) * Math.PI/180;
