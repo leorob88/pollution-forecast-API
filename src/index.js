@@ -53,7 +53,7 @@ function locating(location){
       const lat1 = data.data.city.geo[0];
       const lon1 = data.data.city.geo[1];
       const lat2 = location.substring(6, location.indexOf("&longi"));
-      const lon2 = location.substring(location.indexOf("&longi") + 6, location.length);
+      const lon2 = location.substring(location.indexOf("&longi") + 7, location.length);
       console.log(lat2 + " " + lon2);
       const diam1 = lat1 * Math.PI/180;
       const diam2 = lat2 * Math.PI/180;
