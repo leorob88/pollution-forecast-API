@@ -52,9 +52,9 @@ function locating(location){
       const radius = 6371e3; // metres
       const lat1 = data.data.city.geo[0];
       const lon1 = data.data.city.geo[1];
-      const lat2 = location.substring(6, location.indexOf("&longi")).toNumber();
+      const lat2 = location.substring(6, location.indexOf("&longi"));
       const start2 = location.indexOf("&longi") + 6;
-      const lon2 = location.substring(start2, location.length - start2).toNumber();
+      const lon2 = location.substring(start2, location.length - start2);
       const diam1 = lat1 * Math.PI/180;
       const diam2 = lat2 * Math.PI/180;
       const diff1 = (lat2 - lat1) * Math.PI/180;
