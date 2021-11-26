@@ -84,14 +84,17 @@ function ge(){
     const latit = pos.coords.latitude;
     const longi = pos.coords.longitude;
     //calls main function with input target given by button (stored coordinates above)
-    const coordarr = [latit, longi];
+    const coordarr = {
+      "lat": latit,
+      "lon": longi
+    };
     return coordarr;
   });
 }
 
 //function to call fetch by geoloc input
 function geo(){
-    locating(`latit=${ge()[0]}&longi=${ge()[1]}`);
+    locating(`latit=${ge().lat}&longi=${ge().lon}`);
 }
 
 //click event handlers for buttons
