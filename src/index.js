@@ -1,4 +1,14 @@
 
+var userLatitude, userLongitude;
+
+//tries to get current user position
+const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
+signal.then(pos => {
+  //store coordinates
+  userLatitude = pos.coords.latitude;
+  userLongitude = pos.coords.longitude;
+}).catch(error => console.log(error));
+
 //main function for fetch
 function locating(location){
   console.log(location);
@@ -71,31 +81,12 @@ function locating(location){
   });
 }
 
-//function to call fetch by text input
-function select(input){
-  //calls main function with input target given by button (text input by user)
-  locating(`city=${input}`);
-}
-
-//function to call fetch by geoloc input
-function geo(){
-  //tries to get current user position
-  const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
-  signal.then(pos => {
-    //store coordinates
-    const latit = pos.coords.latitude;
-    const longi = pos.coords.longitude;
-    //calls main function with input target given by button (stored coordinates above)
-    locating(`latit=${latit}&longi=${longi}`);
-  });
-}
-
 //click event handlers for buttons
-document.getElementById("butt1").addEventListener("click", function(){
+document.getElementById("butt0").addEventListener("click", function(){
   //go and call main function with text input by user
-  select(document.getElementById("query").value);
+  locating(`city=${document.getElementById("query").value}`);
 });
 document.getElementById("butt2").addEventListener("click", function(){
   //go and find user coordinates and pass them to the main function
-  geo();
+  locating(`latit=${userLatitude}&longi=${userLongitude}`);
 });
