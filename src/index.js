@@ -1,8 +1,14 @@
 
 var userLatitude, userLongitude;
 
+const options = {
+  enableHighAccuracy: true,
+  maximumAge: 30000,
+  timeout: 27000
+};
+
 //tries to get current user position
-const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
+const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, options));
 signal.then(pos => {
   //store coordinates
   userLatitude = pos.coords.latitude;
