@@ -9,6 +9,7 @@ function findUser(){
   //tries to get current user position
   const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
   signal.then(pos => {
+    console.log(pos);
     //store and return coordinates
     userLatitude = pos.coords.latitude;
     userLongitude = pos.coords.longitude;
