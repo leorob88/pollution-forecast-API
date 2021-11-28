@@ -95,10 +95,9 @@ function locating(location){
       }
       if (searching == 2){
         console.log("array " + data.data.length);
+          console.log(`${distance(data.data[0].station.geo[0], data.data[0].station.geo[1])} kilometers`);
       }else {
-        const placeLatitude = data.data.city.geo[0];
-        const placeLongitude = data.data.city.geo[1];
-        console.log(`${distance(placeLatitude, placeLongitude)} kilometers`);
+        console.log(`${distance(data.data.city.geo[0], data.data.city.geo[1])} kilometers`);
       }
     }
     //optional further info
