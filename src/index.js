@@ -1,31 +1,35 @@
 
-var userLatitude, userLongitude, searching;
-
-const geoLocOptions = {
-  enableHighAccuracy: true,
-  maximumAge: 30000,
-  timeout: 27000
-};
-
-//tries to get current user position
-const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
-signal.then(pos => {
-  //store coordinates
-  userLatitude = pos.coords.latitude;
-  userLongitude = pos.coords.longitude;
-}).catch(error => {
-  //on error, log error
-  console.log(error);
-});
+//geolocation function
+function findUser(){
+  const geoLocOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000
+  };
+  //tries to get current user position
+  const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
+  signal.then(pos => {
+    //store and return coordinates
+    userLatitude = pos.coords.latitude;
+    userLongitude = pos.coords.longitude;
+    return{
+      userLatitude,
+      userLongitude
+    };
+  }).catch(error => {
+    //on error, log error
+    console.log(error);
+  });
+}
 
 //calculate distance between 2 coordinates
 function distance(placeLatitude, placeLongitude){
   const radius = 6371e3; // metres
   console.log(placeLatitude + " " + placeLongitude);
   const diam1 = placeLatitude * Math.PI/180;
-  const diam2 = userLatitude * Math.PI/180;
-  const diff1 = (userLatitude - placeLatitude) * Math.PI/180;
-  const diff2 = (userLongitude - placeLongitude) * Math.PI/180;
+  const diam2 = findUser().userLatitude * Math.PI/180;
+  const diff1 = (findUser().userLatitude - placeLatitude) * Math.PI/180;
+  const diff2 = (findUser().userLongitude - placeLongitude) * Math.PI/180;
   const a = Math.sin(diff1/2) * Math.sin(diff1/2) +
             Math.cos(diam1) * Math.cos(diam2) *
             Math.sin(diff2/2) * Math.sin(diff2/2);
@@ -51,7 +55,7 @@ function quality(aqi){
 }
 
 //main function for fetch
-function locating(location){
+function locating(location, searching){
   console.log(location);
   //fetch infos with given input via buttons
   fetch(`/.netlify/functions/lambda?${location}`)
@@ -118,18 +122,14 @@ function locating(location){
 
 //click event handlers for buttons
 document.getElementById("butt0").addEventListener("click", function(){
-  //go and call main function with text input by user
-  searching = 1;
-  locating(`city=${document.getElementById("query").value}`);
+  //go and call main function with name input by user
+  locating(`city=${document.getElementById("query").value}`, 1);
 });
-//click event handlers for buttons
 document.getElementById("butt1").addEventListener("click", function(){
-  //go and call main function with text input by user
-  searching = 2;
-  locating(`custom=${document.getElementById("query").value}`);
+  //go and call main function with keyword input by user
+  locating(`custom=${document.getElementById("query").value}`, 2);
 });
 document.getElementById("butt2").addEventListener("click", function(){
-  //go and find user coordinates and pass them to the main function
-  searching = 3;
-  locating(`latit=${userLatitude}&longi=${userLongitude}`);
+  //go and call main function with user current position
+  locating(`latit=${findUser().userLatitude}&longi=${findUser().userLongitude}`, 3);
 });
