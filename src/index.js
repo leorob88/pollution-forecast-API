@@ -86,7 +86,7 @@ function locating(location){
 
         }
         //select anyway the first result and get aqi
-        currentResult = data.data[0];
+        currentResult = data.data[1];
         let aqi = currentResult.aqi;
         //tell user the result and quality for the current result position
         document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
