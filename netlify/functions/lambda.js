@@ -9,6 +9,9 @@ exports.handler = async event => {
   if (target.city){
     const response = await fetch(`https://api.waqi.info/feed/${target.city}/?token=${API_KEY}`);
     data = await response.json();
+  }else if (target.custom) {
+    const response = await fetch(`https://api.waqi.info/search/?keyword=${target.custom}&token=${API_KEY}`);
+    data = await response.json();
   }else if (target.latit && target.longi) {
     const response = await fetch(`https://api.waqi.info/feed/geo:${target.latit};${target.longi}/?token=${API_KEY}`);
     data = await response.json();
