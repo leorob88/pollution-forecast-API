@@ -1,14 +1,14 @@
 
 var userLatitude, userLongitude, searching;
 
-const options = {
+const geoLocOptions = {
   enableHighAccuracy: true,
   maximumAge: 30000,
   timeout: 27000
 };
 
 //tries to get current user position
-const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, options));
+const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
 signal.then(pos => {
   //store coordinates
   userLatitude = pos.coords.latitude;
@@ -34,6 +34,22 @@ function distance(placeLatitude, placeLongitude){
   return Math.round(d);
 }
 
+function quality(aqi){
+  if (aqi > 300){
+    return "hazardous";
+  }else if (aqi > 200) {
+    return "very unhealthy";
+  }else if (aqi > 150) {
+    return "unhealthy";
+  }else if (aqi > 100) {
+    return "unhealthy for sensitive groups";
+  }else if (aqi > 50) {
+    return "moderate";
+  }else {
+    return "good";
+  }
+}
+
 //main function for fetch
 function locating(location){
   console.log(location);
@@ -44,9 +60,9 @@ function locating(location){
     console.log(data);
     //if response is not found,
     if (data.data == "Unknown station"){
-      //if search by text
+      //if search by name
       if (searching == 1){
-        //tell user input text result was not found
+        //tell user name result was not found
         document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
       }
       //if search by keyword
@@ -62,41 +78,36 @@ function locating(location){
     }
     //if response is found
     else {
-      //take notice of aqi value for further text info
-      let aqi = data.data.aqi;
-      let more;
-      if (aqi > 300){
-        more = "hazardous";
-      }else if (aqi > 200) {
-        more = "very unhealthy";
-      }else if (aqi > 150) {
-        more = "unhealthy";
-      }else if (aqi > 100) {
-        more = "unhealthy for sensitive groups";
-      }else if (aqi > 50) {
-        more = "moderate";
-      }else {
-        more = "good";
-      }
-      //if search by text
-      if (searching == 1) {
-        //tell user the result and quality for their searched position
-        document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${more}.`;
-      }
-      //if search by keyword
-      else if (searching == 2) {
-        //tell user the result and quality for the selected(?) position
-        document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
-      }
-      //if search by geoloc
-      else if (searching == 3) {
-        //tell user the result and quality for their current position (nearest)
-        document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
-      }
+      //if search by keyword (multiple possible result)
       if (searching == 2){
         console.log("array " + data.data.length);
-          console.log(`${distance(data.data[0].station.geo[0], data.data[0].station.geo[1])} kilometers`);
-      }else {
+        //create list if there are more than 1 result
+        if (data.data.length > 1){
+
+        }
+        //select anyway the first result and get aqi
+        currentResult = data.data[0];
+        let aqi = currentResult.aqi;
+        //tell user the result and quality for the current result position
+        document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+        //log distance from user for first result
+        console.log(`${distance(currentResult.station.geo[0], currentResult.station.geo[1])} kilometers`);
+      }
+      //if search NOT by keyword (unique result)
+      else {
+        //take notice of aqi value for further text info
+        let aqi = data.data.aqi;
+        //if search by name
+        if (searching == 1) {
+          //tell user the result and quality for their searched position
+          document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+        }
+        //if search by geoloc
+        else if (searching == 3) {
+          //tell user the result and quality for their current position (nearest)
+          document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+        }
+        //log distance from user
         console.log(`${distance(data.data.city.geo[0], data.data.city.geo[1])} kilometers`);
       }
     }
