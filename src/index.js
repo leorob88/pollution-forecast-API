@@ -1,38 +1,31 @@
 
-//geolocation function
-async function findUser(){
-  const geoLocOptions = {
-    enableHighAccuracy: true,
-    maximumAge: 30000,
-    timeout: 27000
-  };
-  //tries to get current user position
-  const signal = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
-  signal.then(pos => {
-    console.log(pos);
-    //store and return coordinates
-    const userLatitude = pos.coords.latitude;
-    const userLongitude = pos.coords.longitude;
-    console.log("restituisco le coord");
-    return{
-      userLatitude,
-      userLongitude
-    };
-  }).catch(error => {
-    //on error, log error
-    console.log(error);
-  });
-}
+var userLatitude, userLongitude;
+
+const geoLocOptions = {
+  enableHighAccuracy: true,
+  maximumAge: 30000,
+  timeout: 27000
+};
+
+//tries to get current user position
+const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
+signal.then(pos => {
+  //store coordinates
+  userLatitude = pos.coords.latitude;
+  userLongitude = pos.coords.longitude;
+}).catch(error => {
+  //on error, log error
+  console.log(error);
+});
 
 //calculate distance between 2 coordinates
 function distance(placeLatitude, placeLongitude){
-  console.log("calcolo la distanza");
   const radius = 6371e3; // metres
   console.log(placeLatitude + " " + placeLongitude);
   const diam1 = placeLatitude * Math.PI/180;
-  const diam2 = findUser().userLatitude * Math.PI/180;
-  const diff1 = (findUser().userLatitude - placeLatitude) * Math.PI/180;
-  const diff2 = (findUser().userLongitude - placeLongitude) * Math.PI/180;
+  const diam2 = userLatitude * Math.PI/180;
+  const diff1 = (userLatitude - placeLatitude) * Math.PI/180;
+  const diff2 = (userLongitude - placeLongitude) * Math.PI/180;
   const a = Math.sin(diff1/2) * Math.sin(diff1/2) +
             Math.cos(diam1) * Math.cos(diam2) *
             Math.sin(diff2/2) * Math.sin(diff2/2);
@@ -126,7 +119,6 @@ function locating(location, searching){
 //click event handlers for buttons
 document.getElementById("butt0").addEventListener("click", function(){
   //go and call main function with name input by user
-  console.log("faccio fetch milano");
   locating(`city=${document.getElementById("query").value}`, 1);
 });
 document.getElementById("butt1").addEventListener("click", function(){
@@ -135,5 +127,5 @@ document.getElementById("butt1").addEventListener("click", function(){
 });
 document.getElementById("butt2").addEventListener("click", function(){
   //go and call main function with user current position
-  locating(`latit=${findUser().userLatitude}&longi=${findUser().userLongitude}`, 3);
+  locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
