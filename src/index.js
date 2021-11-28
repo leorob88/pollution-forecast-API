@@ -31,7 +31,7 @@ function distance(placeLatitude, placeLongitude){
             Math.sin(diff2/2) * Math.sin(diff2/2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   const d = radius * c / 1000; // in kilometres
-  return int(d);
+  return Math.round(d);
 }
 
 //main function for fetch
