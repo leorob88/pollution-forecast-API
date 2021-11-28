@@ -1,13 +1,13 @@
 
 //geolocation function
-function findUser(){
+async function findUser(){
   const geoLocOptions = {
     enableHighAccuracy: true,
     maximumAge: 30000,
     timeout: 27000
   };
   //tries to get current user position
-  const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
+  const signal = await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
   signal.then(pos => {
     console.log(pos);
     //store and return coordinates
