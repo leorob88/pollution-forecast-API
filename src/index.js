@@ -94,7 +94,7 @@ function locating(location){
         document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
       }
       if (searching == 2){
-        console.log("array " + data.size);
+        console.log("array " + data.data.size);
       }else {
         const placeLatitude = data.data.city.geo[0];
         const placeLongitude = data.data.city.geo[1];
