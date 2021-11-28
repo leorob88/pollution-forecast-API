@@ -11,8 +11,8 @@ function findUser(){
   signal.then(pos => {
     console.log(pos);
     //store and return coordinates
-    userLatitude = pos.coords.latitude;
-    userLongitude = pos.coords.longitude;
+    const userLatitude = pos.coords.latitude;
+    const userLongitude = pos.coords.longitude;
     console.log("restituisco le coord");
     return{
       userLatitude,
