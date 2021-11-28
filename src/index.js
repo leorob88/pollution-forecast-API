@@ -12,6 +12,7 @@ function findUser(){
     //store and return coordinates
     userLatitude = pos.coords.latitude;
     userLongitude = pos.coords.longitude;
+    console.log("restituisco le coord");
     return{
       userLatitude,
       userLongitude
@@ -24,6 +25,7 @@ function findUser(){
 
 //calculate distance between 2 coordinates
 function distance(placeLatitude, placeLongitude){
+  console.log("calcolo la distanza");
   const radius = 6371e3; // metres
   console.log(placeLatitude + " " + placeLongitude);
   const diam1 = placeLatitude * Math.PI/180;
@@ -123,6 +125,7 @@ function locating(location, searching){
 //click event handlers for buttons
 document.getElementById("butt0").addEventListener("click", function(){
   //go and call main function with name input by user
+  console.log("faccio fetch milano");
   locating(`city=${document.getElementById("query").value}`, 1);
 });
 document.getElementById("butt1").addEventListener("click", function(){
