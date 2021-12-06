@@ -64,16 +64,28 @@ function locating(location, searching){
       if (searching == 1){
         //tell user name result was not found
         document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
+        let retry = confirm("Wanna try keyword search?");
+        if (retry){
+          locating(`custom=${document.getElementById("query").value}`, 2);
+        }
       }
       //if search by keyword
       else if (searching == 2) {
         //tell user keyword result was not found
         document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
+        let retry = confirm("Wanna try geolocation?");
+        if (retry){
+          locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
+        }
       }
       //if search by geoloc
       else if (searching == 3) {
         //tell user geolocation result was not found
         document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
+        let retry = confirm("Wanna try name search?");
+        if (retry){
+          locating(`city=${document.getElementById("query").value}`, 1);
+        }
       }
     }
     //if response is found
