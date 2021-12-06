@@ -59,7 +59,7 @@ function locating(location, searching){
   .then(data => {
     console.log(data);
     //if response is not found,
-    if (data.data == "Unknown station"){
+    if (data.data == "Unknown station" || data.data.length == 0){
       //if search by name
       if (searching == 1){
         //tell user name result was not found
