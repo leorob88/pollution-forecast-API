@@ -88,15 +88,20 @@ function locating(location, searching){
         //select anyway the first result and get aqi
         currentResult = data.data[0];
         let aqi = currentResult.aqi;
+        //calculate distance from user for first result
+        let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
         //tell user the result and quality for the current result position
         document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-        //log distance from user for first result
-        console.log(`${distance(currentResult.station.geo[0], currentResult.station.geo[1])} kilometers`);
+        if (far != null || far != undefined) {
+          document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
+        }
       }
       //if search NOT by keyword (unique result)
       else {
         //take notice of aqi value for further text info
         let aqi = data.data.aqi;
+        //calculate distance from user for first result
+        let far = distance(data.data.city.geo[0], data.data.city.geo[1]);
         //if search by name
         if (searching == 1) {
           //tell user the result and quality for their searched position
@@ -107,8 +112,9 @@ function locating(location, searching){
           //tell user the result and quality for their current position (nearest)
           document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
         }
-        //log distance from user
-        console.log(`${distance(data.data.city.geo[0], data.data.city.geo[1])} kilometers`);
+        if (far != null || far != undefined) {
+          document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
+        }
       }
     }
     //optional further info
