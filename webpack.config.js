@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
         title: "Pollution Forecast API",
         template: path.resolve(__dirname, './src/index.html'),
         favicon: path.resolve(__dirname, './src/project-icon.ico'),
-        link: path.resolve(__dirname, './src/style.css')
+        stylesheet: path.resolve(__dirname, './src/style.css')
       }),
       new Dotenv()
     ]
