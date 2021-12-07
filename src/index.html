@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <!--<link rel="icon" href="project-icon.ico" type="image/x-icon"/>-->
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div id="wrapper">
@@ -11,8 +11,10 @@
       <button type="button" name="button" id="butt1">filter</button>
       <button type="button" name="button" id="butt2">geo</button>
       <input type="text" name="query" id="query" value="Milano">
-      <div id="answer"></div>
+      <div id="answer">
+        <button type="button" name="button" id="buttyes">yes</button>
+        <button type="button" name="button" id="buttno">no</button>
+      </div>
     </div>
-    <!--<script src="https://maps.googleapis.com/maps/api/js?sensor=false&callback=initMap" async defer></script>-->
   </body>
 </html>
