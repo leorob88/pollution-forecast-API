@@ -56,7 +56,7 @@ function createOption(text){
     listOption.id = `option${document.getElementById("keyword-results").options.length + 1}`;
     listOption.value = text;
     listOption.className = "listOptions";
-    return div;
+    return listOption;
 }
 
 //main function for fetch, expects data to search for and a value stating the type of search
