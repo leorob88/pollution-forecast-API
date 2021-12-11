@@ -110,9 +110,9 @@ function locating(location, searching){
 
         }
         //select anyway the first result and get aqi
-        alert(data.data[0].station.name);
         currentResult = data.data[0];
         let aqi = currentResult.aqi;
+        alert(aqi);
         //calculate distance from user for first result
         let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
         //tell user the result and quality for the current result position
