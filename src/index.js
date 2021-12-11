@@ -107,9 +107,10 @@ function locating(location, searching){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
         if (data.data.length > 1){
-          
+
         }
         //select anyway the first result and get aqi
+        alert(data.data[0].station.name);
         currentResult = data.data[0];
         let aqi = currentResult.aqi;
         //calculate distance from user for first result
