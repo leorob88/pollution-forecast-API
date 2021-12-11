@@ -115,11 +115,6 @@ function locating(location, searching){
       if (searching == 2){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
-        if (data.data.length > 1){
-          for (let i = 0; i < data.data.length; i++){
-            document.getElementById("keyword-results").appendChild(createOption(data.data[i].station.name));
-          }
-        }
         //select anyway the first result and get aqi
         currentResult = data.data[0];
         let aqi = currentResult.aqi;
