@@ -2,14 +2,14 @@ import "./style.css";
 
 var userLatitude, userLongitude;
 
-const geoLocOptions = {
+const geolocationOptions = {
   enableHighAccuracy: true,
   maximumAge: 30000,
   timeout: 27000
 };
 
 //tries to get current user position
-const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
+const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geolocationOptions));
 signal.then(pos => {
   //store coordinates
   userLatitude = pos.coords.latitude;
@@ -51,6 +51,14 @@ function quality(aqi){
   }
 }
 
+function createOption(text){
+    var listOption = document.createElement("option");
+    listOption.id = `option${document.getElementById("keyword-results").options.length + 1}`;
+    listOption.value = text;
+    listOption.className = "listOptions";
+    return div;
+}
+
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
   //fetch infos with given input via buttons (or recursive function)
@@ -58,6 +66,7 @@ function locating(location, searching){
   .then(response => response.json())
   .then(data => {
     console.log(data);
+    document.getElementById("keyword-results").innerHTML = "";
     //if response is not found,
     if (data.data == "Unknown station" || (searching == 2 && data.data.length == 0)){
       //if search was by name,
@@ -102,12 +111,14 @@ function locating(location, searching){
     }
     //if response is found
     else {
-      //if search was by keyword (multiple possible result)
+      //if search WAS by keyword (multiple possible result)
       if (searching == 2){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
         if (data.data.length > 1){
-
+          for (let i = 0; i < data.data.length; i++){
+            document.getElementById("keyword-results").appendChild(createOption(data.data[i].station.name));
+          }
         }
         //select anyway the first result and get aqi
         currentResult = data.data[0];
@@ -121,7 +132,7 @@ function locating(location, searching){
           document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
         }
       }
-      //if search was NOT by keyword (unique result)
+      //if search WAS NOT by keyword (unique result)
       else {
         //take notice of aqi value for further text info
         let aqi = data.data.aqi;
