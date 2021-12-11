@@ -55,6 +55,7 @@ function createOption(text){
     var listOption = document.createElement("option");
     listOption.id = "option" + (document.getElementById("keyword-results").options.length + 1);
     listOption.value = text;
+    listOption.innerHTML = text;
     listOption.className = "listOptions";
     return listOption;
 }
