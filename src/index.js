@@ -126,7 +126,7 @@ function locating(location, searching){
         //calculate distance from user for first result
         let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
         //tell user the result and quality for the current result position
-        document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+        document.getElementById("answer").innerHTML += `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
         //if user position (and distance) is known, tell also the user how far they are from the stated station
         if (far != null || far != undefined) {
           document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
