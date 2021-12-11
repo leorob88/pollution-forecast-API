@@ -2,14 +2,14 @@ import "./style.css";
 
 var userLatitude, userLongitude;
 
-const geolocationOptions = {
+const geoLocOptions = {
   enableHighAccuracy: true,
   maximumAge: 30000,
   timeout: 27000
 };
 
 //tries to get current user position
-const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geolocationOptions));
+const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
 signal.then(pos => {
   //store coordinates
   userLatitude = pos.coords.latitude;
@@ -50,7 +50,6 @@ function quality(aqi){
     return "good";
   }
 }
-
 
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
@@ -108,6 +107,7 @@ function locating(location, searching){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
         if (data.data.length > 1){
+          
         }
         //select anyway the first result and get aqi
         currentResult = data.data[0];
