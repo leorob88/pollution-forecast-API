@@ -66,7 +66,6 @@ function locating(location, searching){
   .then(response => response.json())
   .then(data => {
     console.log(data);
-    document.getElementById("keyword-results").innerHTML = "";
     //if response is not found,
     if (data.data == "Unknown station" || (searching == 2 && data.data.length == 0)){
       //if search was by name,
@@ -115,6 +114,12 @@ function locating(location, searching){
       if (searching == 2){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
+        if (data.data.length > 1){
+          document.getElementById("keyword-results").innerHTML = "";
+          for (let i = 0; i < data.data.length; i++){
+            document.getElementById("keyword-results").appendChild(createOption(data.data[i].station.name));
+          }
+        }
         //select anyway the first result and get aqi
         currentResult = data.data[0];
         let aqi = currentResult.aqi;
