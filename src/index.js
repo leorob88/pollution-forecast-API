@@ -51,6 +51,14 @@ function quality(aqi){
   }
 }
 
+function createOption(text){
+    var listOption = document.createElement("option");
+    listOption.id = "option" + (document.getElementById("keyword-results").options.length + 1);
+    listOption.value = text;
+    listOption.className = "listOptions";
+    return listOption;
+}
+
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
   //fetch infos with given input via buttons (or recursive function)
@@ -107,12 +115,14 @@ function locating(location, searching){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
         if (data.data.length > 1){
-
+          document.getElementById("keyword-results").innerHTML = "";
+          for (let i = 0; i < data.data.length; i++){
+            document.getElementById("keyword-results").appendChild(createOption(data.data[i].station.name));
+          }
         }
         //select anyway the first result and get aqi
-        currentResult = data.data[0];
+        let currentResult = data.data[0];
         let aqi = currentResult.aqi;
-        alert(aqi);
         //calculate distance from user for first result
         let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
         //tell user the result and quality for the current result position
