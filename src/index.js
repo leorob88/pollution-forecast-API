@@ -124,6 +124,8 @@ function locating(location, searching){
         //store data into outer object
         results = data;
         console.log(results);
+        //selects the first result
+        selection();
       }
       //if search WAS NOT by keyword (unique result)
       else {
@@ -169,7 +171,7 @@ document.getElementById("keyword-results").addEventListener("click", selection()
 
 
 function selection(){
-  let index = document.getElementById("keyword-results").selectedOptions;
+  let index = document.getElementById("keyword-results").selectedIndex;
   console.log(index);
   if (index > -1){
     //shows info about the selected list result
