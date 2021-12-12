@@ -125,7 +125,7 @@ function locating(location, searching){
         results = data;
         console.log(results);
         //selects the first result
-        //document.getElementById("keyword-results").selectedIndex = 0;
+        selection(0);
       }
       //if search WAS NOT by keyword (unique result)
       else {
@@ -167,8 +167,11 @@ document.getElementById("butt2").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
-document.getElementById("keyword-results").addEventListener("click", function(){
-  console.log(document.getElementById("keyword-results").selectedIndex);
+document.getElementById("keyword-results").addEventListener("click", selection(this.selectedIndex));
+
+
+function selection(index){
+  console.log(index);
   //shows info about the selected list result
   let currentResult = results.data[0];
   let aqi = currentResult.aqi;
@@ -181,4 +184,4 @@ document.getElementById("keyword-results").addEventListener("click", function(){
   if (far != null || far != undefined) {
     document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
   }
-});
+}
