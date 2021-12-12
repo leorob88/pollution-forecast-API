@@ -167,7 +167,7 @@ document.getElementById("butt2").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
-document.getElementById("keyword-results").addEventListener("click", function(){
+document.getElementById("keyword-results").addEventListener("change", function(){
   //shows info about the selected list result
   let currentResult = results.data[0];
   let aqi = currentResult.aqi;
