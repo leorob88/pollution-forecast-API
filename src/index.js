@@ -171,6 +171,7 @@ document.getElementById("keyword-results").addEventListener("click", function(){
   //shows info about the selected list result
   let currentResult = results.data[document.getElementById("keyword-results").selectedIndex];
   let aqi = currentResult.aqi;
+  console.log(aqi);
   //calculate distance between user and result
   let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
   //tell user the result and quality for the current result position
