@@ -125,7 +125,7 @@ function locating(location, searching){
         results = data;
         console.log(results);
         //selects the first result
-        document.getElementById("keyword-results").selectedIndex = 0;
+        //document.getElementById("keyword-results").selectedIndex = 0;
       }
       //if search WAS NOT by keyword (unique result)
       else {
@@ -168,6 +168,7 @@ document.getElementById("butt2").addEventListener("click", function(){
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
 document.getElementById("keyword-results").addEventListener("change", function(){
+  console.log(document.getElementById("keyword-results").selectedIndex);
   //shows info about the selected list result
   let currentResult = results.data[0];
   let aqi = currentResult.aqi;
