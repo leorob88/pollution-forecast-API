@@ -169,7 +169,7 @@ document.getElementById("butt2").addEventListener("click", function(){
 });
 document.getElementById("keyword-results").addEventListener("click", function(){
   //shows info about the selected list result
-  let currentResult = results.data[document.getElementById("keyword-results").selectedIndex];
+  let currentResult = results.data[0];
   let aqi = currentResult.aqi;
   console.log(aqi);
   //calculate distance between user and result
