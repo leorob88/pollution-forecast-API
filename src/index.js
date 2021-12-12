@@ -123,6 +123,7 @@ function locating(location, searching){
         }
         //store data into outer object
         results = data;
+        console.log(results);
         //selects the first result
         document.getElementById("keyword-results").selectedIndex = 0;
       }
