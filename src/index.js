@@ -169,7 +169,7 @@ document.getElementById("keyword-results").addEventListener("click", selection()
 
 
 function selection(){
-  let index = document.getElementById("keyword-results").selectedIndex;
+  let index = document.getElementById("keyword-results").selectedOption;
   console.log(index);
   if (index > -1){
     //shows info about the selected list result
