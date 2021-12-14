@@ -167,7 +167,7 @@ document.getElementById("butt2").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
-document.getElementById("keyword-results").addEventListener("click", selection());
+document.getElementById("keyword-results").addEventListener("change", selection());
 //PER QUALCHE RAGIONE, NON RECEPISCE LA SELEZIONE DELLA LISTA E L'INDEX VALE SEMPRE -1
 
 function selection(){
