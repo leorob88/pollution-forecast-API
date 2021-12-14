@@ -168,7 +168,7 @@ document.getElementById("butt2").addEventListener("click", function(){
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
 document.getElementById("keyword-results").addEventListener("onchange", selection());
-//PER QUALCHE RAGIONE, NON RECEPISCE LA SELEZIONE DELLA LISTA E L'INDEX VALE SEMPRE -1
+//PER QUALCHE RAGIONE, NON RECEPISCE IL CLICK/CHANGE
 
 function selection(){
   let index = document.getElementById("keyword-results").selectedIndex;
