@@ -175,7 +175,7 @@ function selection(){
   console.log(index);
   if (index > -1){
     //shows info about the selected list result
-    let currentResult = results.data[0];
+    let currentResult = results.data[index];
     let aqi = currentResult.aqi;
     console.log(aqi);
     //calculate distance between user and result
