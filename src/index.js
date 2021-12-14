@@ -52,7 +52,7 @@ function quality(aqi){
 }
 
 function createOption(text){
-    let listOption = new Option(text, text, false, true);
+    let listOption = new Option(text, text, true, true);
     //listOption.id = "option" + (document.getElementById("keyword-results").options.length + 1);
     //listOption.value = text;
     //listOption.innerHTML = text;
