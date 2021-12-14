@@ -118,7 +118,7 @@ function locating(location, searching){
         if (data.data.length > 1){
           document.getElementById("keyword-results").innerHTML = "";
           for (let i = 0; i < data.data.length; i++){
-            document.getElementById("keyword-results").appendChild(createOption(data.data[i].station.name));
+            document.getElementById("keyword-results").append(createOption(data.data[i].station.name));
           }
         }
         //store data into outer object
