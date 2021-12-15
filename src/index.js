@@ -167,7 +167,7 @@ document.getElementById("butt2").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
-document.getElementById("keyword-results").addEventListener("onclick", selection);
+document.getElementById("keyword-results").addEventListener("onclick", selection());
 //PER QUALCHE RAGIONE, NON RECEPISCE IL CLICK/CHANGE
 
 function selection(){
