@@ -115,12 +115,12 @@ function locating(location, searching){
       if (searching == 2){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
-        if (data.data.length > 1){
-          document.getElementById("keyword-results").innerHTML = "";
-          for (let i = 0; i < data.data.length; i++){
-            document.getElementById("keyword-results").append(createOption(data.data[i].station.name));
-          }
-        }
+        //if (data.data.length > 1){
+        //  document.getElementById("keyword-results").innerHTML = "";
+        //  for (let i = 0; i < data.data.length; i++){
+        //    document.getElementById("keyword-results").append(createOption(data.data[i].station.name));
+        //  }
+        //}
         //store data into outer object
         results = data;
         console.log(results);
