@@ -154,6 +154,7 @@ function locating(location, searching){
   });
 }
 
+document.addEventListener("DOMContentLoaded", function(){
 //click event handlers for buttons
 document.getElementById("butt0").addEventListener("click", function(){
   //go and call main function with name input by user
@@ -169,7 +170,7 @@ document.getElementById("butt2").addEventListener("click", function(){
 });
 document.getElementById("keyword-results").addEventListener("change", selection);
 //PER QUALCHE RAGIONE, NON RECEPISCE IL CLICK/CHANGE
-
+});
 function selection(){
   let index = document.getElementById("keyword-results").selectedIndex;
   console.log(index);
