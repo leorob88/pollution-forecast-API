@@ -154,24 +154,6 @@ function locating(location, searching){
   });
 }
 
-document.getElementById("keyword-results").addEventListener("change", function(){
-  let index = document.getElementById("keyword-results").selectedIndex;
-  console.log(index);
-  if (index > -1){
-    //shows info about the selected list result
-    let currentResult = results.data[index];
-    let aqi = currentResult.aqi;
-    console.log(aqi);
-    //calculate distance between user and result
-    let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
-    //tell user the result and quality for the current result position
-    document.getElementById("answer").innerHTML += `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-    //if user position (and distance) is known, tell also the user how far they are from the stated station
-    if (far != null || far != undefined) {
-      document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
-    }
-  }
-});
 //click event handlers for buttons
 document.getElementById("butt0").addEventListener("click", function(){
   //go and call main function with name input by user
@@ -185,6 +167,7 @@ document.getElementById("butt2").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
+document.getElementById("keyword-results").addEventListener("change", selection);
 //PER QUALCHE RAGIONE, NON RECEPISCE IL CLICK/CHANGE
 
 function selection(){
