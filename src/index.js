@@ -154,19 +154,6 @@ function locating(location, searching){
   });
 }
 
-//click event handlers for buttons
-document.getElementById("butt0").addEventListener("click", function(){
-  //go and call main function with name input by user
-  locating(`city=${document.getElementById("query").value}`, 1);
-});
-document.getElementById("butt1").addEventListener("click", function(){
-  //go and call main function with keyword input by user
-  locating(`custom=${document.getElementById("query").value}`, 2);
-});
-document.getElementById("butt2").addEventListener("click", function(){
-  //go and call main function with user current position
-  locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
-});
 document.getElementById("keyword-results").addEventListener("change", function(){
   let index = document.getElementById("keyword-results").selectedIndex;
   console.log(index);
@@ -184,6 +171,19 @@ document.getElementById("keyword-results").addEventListener("change", function()
       document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
     }
   }
+});
+//click event handlers for buttons
+document.getElementById("butt0").addEventListener("click", function(){
+  //go and call main function with name input by user
+  locating(`city=${document.getElementById("query").value}`, 1);
+});
+document.getElementById("butt1").addEventListener("click", function(){
+  //go and call main function with keyword input by user
+  locating(`custom=${document.getElementById("query").value}`, 2);
+});
+document.getElementById("butt2").addEventListener("click", function(){
+  //go and call main function with user current position
+  locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
 //PER QUALCHE RAGIONE, NON RECEPISCE IL CLICK/CHANGE
 
