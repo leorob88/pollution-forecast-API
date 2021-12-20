@@ -79,7 +79,7 @@ function locating(location, searching){
         }
         //if not, tell user name result was not found
         else {
-          document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
+          document.getElementById("answer").text = "I couldn't find any stations for pollution detection in the location you searched for.";
         }
       }
       //if search was by keyword,
@@ -92,7 +92,7 @@ function locating(location, searching){
         }
         //if not, tell user keyword result was not found
         else {
-          document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
+          document.getElementById("answer").text = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
         }
       }
       //if search was by geolocation,
@@ -105,7 +105,7 @@ function locating(location, searching){
         }
         //if not, tell user geolocation result was not found
         else {
-          document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
+          document.getElementById("answer").text = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
         }
       }
     }
@@ -136,21 +136,21 @@ function locating(location, searching){
         //if search was by name
         if (searching == 1) {
           //tell user the result and quality for their searched position
-          document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+          document.getElementById("answer").text = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
         }
         //if search was by geolocation
         else if (searching == 3) {
           //tell user the result and quality for their current position (nearest)
-          document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+          document.getElementById("answer").text = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
         }
         //if user position (and distance) is known, tell also the user how far they are from the stated station
         if (far != null || far != undefined) {
-          document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
+          document.getElementById("answer").text += `The estimated distance from your position is about ${far} kilometers.`;
         }
       }
     }
     //optional further info
-    document.getElementById("answer").innerHTML += ` For further details, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
+    document.getElementById("answer").text += ` For further details, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
   });
 }
 
@@ -181,10 +181,10 @@ function selection(){
     //calculate distance between user and result
     let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
     //tell user the result and quality for the current result position
-    document.getElementById("answer").innerHTML += `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+    document.getElementById("answer").text += `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
     //if user position (and distance) is known, tell also the user how far they are from the stated station
     if (far != null || far != undefined) {
-      document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
+      document.getElementById("answer").text += `The estimated distance from your position is about ${far} kilometers.`;
     }
   }
 }
