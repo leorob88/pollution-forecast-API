@@ -1,3 +1,4 @@
+
 import "./style.css";
 
 var userLatitude, userLongitude, results;
@@ -99,7 +100,7 @@ function locating(location, searching){
       //if search was by geolocation,
       else if (searching == 3) {
         //ask user if they want to try a name search
-        let retry = confirm("Wanna try name search?");
+        let retry = confirm("I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?");
         //if yes, try it
         if (retry){
           locating(`city=${document.getElementById("query").value}`, 1);
