@@ -185,7 +185,7 @@ function selection(){
     document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
     //if user position (and distance) is known, tell also the user how far they are from the stated station
     if (far != null || far != undefined) {
-      document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
+      document.getElementById("answer").innerHTML += ` The estimated distance from your position is about ${far} kilometers.`;
     }
   }
 }
