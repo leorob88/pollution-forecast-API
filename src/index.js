@@ -158,15 +158,15 @@ function locating(location, searching){
 }
 
 //click event handlers for buttons
-document.getElementById("butt0").addEventListener("click", function(){
+document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
   locating(`city=${document.getElementById("query").value}`, 1);
 });
-document.getElementById("butt1").addEventListener("click", function(){
+document.getElementById("button-keyword").addEventListener("click", function(){
   //go and call main function with keyword input by user
   locating(`custom=${document.getElementById("query").value}`, 2);
 });
-document.getElementById("butt2").addEventListener("click", function(){
+document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
