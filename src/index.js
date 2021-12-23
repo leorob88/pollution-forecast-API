@@ -154,6 +154,9 @@ function locating(location, searching){
     }
     //optional further info
     document.getElementById("answer").innerHTML += ` For further details, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
+  })
+  .catch(function (error) {
+    document.getElementById("answer").innerHTML = `Something went wrong. The process brought up this error message: ${error.message}`;
   });
 }
 
