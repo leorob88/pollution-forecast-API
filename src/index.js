@@ -118,7 +118,7 @@ function locating(location, searching){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
         if (data.data.length > 1){
-          document.getElementByClassName("hidden-elems").style["visibility"] = "visible";
+          document.getElementsByClassName("hidden-elems").style["visibility"] = "visible";
           document.getElementById("keyword-results").innerHTML = "";
           for (let i = 0; i < data.data.length; i++){
             document.getElementById("keyword-results").append(createOption(data.data[i].station.name));
