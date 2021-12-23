@@ -1,8 +1,11 @@
 body{
-  background-color: #888;
+  background-color: #aaa;
 }
 button{
   margin-top: 10px;
+  margin-bottom: 10px;
+}
+input, select{
   margin-bottom: 10px;
 }
 #keyword-results{
