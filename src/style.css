@@ -4,3 +4,6 @@ body{
 #keyword-results{
   width: 100px;
 }
+.hidden-elems{
+  visibility: hidden;
+}

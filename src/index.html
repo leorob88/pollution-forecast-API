@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
     <div id="wrapper">
-      <button type="button" name="button" id="butt0">input</button>
-      <button type="button" name="button" id="butt1">filter</button>
-      <button type="button" name="button" id="butt2">geo</button>
-      <input type="text" name="query" id="query" value="Milano">
+      You can search a location by
+      <button type="button" id="button-name">Name</button>
+      <button type="button" id="button-keyword">Keyword</button>
+      <input type="text" id="query" value="Milano">
+      or
+      <button type="button" id="button-geoloc">Geolocation</button>
       <select name="keyword-results" size="6" class="hidden-elems" id="keyword-results"></select>
       <div id="answer"></div>
       <div id="agree">
-        <button type="button" name="button" id="buttYes" class="hidden-elems">Yes</button>
-        <button type="button" name="button" id="buttNo" class="hidden-elems">No</button>
+        <button type="button" id="button-agree" class="hidden-elems">Yes</button>
+        <button type="button" id="button-deny" class="hidden-elems">No</button>
       </div>
     </div>
   </body>
