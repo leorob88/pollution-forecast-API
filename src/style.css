@@ -1,6 +1,9 @@
 body{
   background-color: #888;
 }
+button{
+  margin: 10px;
+}
 #keyword-results{
   width: 100px;
 }
