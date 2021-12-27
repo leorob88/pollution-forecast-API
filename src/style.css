@@ -13,6 +13,8 @@
   color: #eee;
 }
 #wrapper{
+  margin: 0px;
+  padding: 0px;
   height: 97vh;
   display: flex;
 }
