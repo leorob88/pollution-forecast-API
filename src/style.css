@@ -12,8 +12,8 @@
   background-color: #111;
   color: #eee;
 }
-html, body{
-  height: 100%;
+body{
+  height: 100vh;
 }
 #wrapper{
   display: flex;
