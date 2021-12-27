@@ -5,14 +5,15 @@
   font-size: 14px;
 }
 .welcome{
-  background-color: #ddd;
-  color: #222;
+  background-color: #eee;
+  color: #111;
 }
 .page{
-  background-color: #222;
-  color: #ddd;
+  background-color: #111;
+  color: #eee;
 }
 #wrapper{
+  height: 100%;
   display: flex;
 }
 button{
