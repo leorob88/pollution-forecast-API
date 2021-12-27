@@ -12,11 +12,8 @@
   background-color: #111;
   color: #eee;
 }
-body{
-  height: 100vh;
-}
 #wrapper{
-  height: 100vh;
+  height: 95vh;
   display: flex;
 }
 button{
