@@ -4,8 +4,13 @@
 .page, p{
   font-size: 14px;
 }
-body{
-  background-color: #aaa;
+.welcome{
+  background-color: #ddd;
+  color: #222;
+}
+.page{
+  background-color: #222;
+  color: #ddd;
 }
 #wrapper{
   display: flex;
