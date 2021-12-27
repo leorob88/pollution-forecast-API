@@ -1,3 +1,7 @@
+*{
+  font-family: "Verdana", "Arial", serif;
+  font-size: 14px;
+}
 body{
   background-color: #aaa;
 }
