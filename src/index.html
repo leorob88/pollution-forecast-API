@@ -6,24 +6,35 @@
   </head>
   <body>
     <div id="wrapper">
-      You can search a location by
-      <br>
-      <button type="button" id="button-name">Name</button> /
-      <button type="button" id="button-keyword">Keyword</button>
-      <br>
-      <input type="text" id="query" value="Milano">
-      <br>
-      or
-      <br>
-      <button type="button" id="button-geoloc">Geolocation</button>
-      <br>
-      <select name="keyword-results" size="1" class="hidden-elems" id="keyword-results"></select>
-      <br>
-      <div id="answer"></div>
-      <br>
-      <div id="agree">
-        <button type="button" id="button-agree" class="hidden-elems">Yes</button>
-        <button type="button" id="button-deny" class="hidden-elems">No</button>
+      <div class="welcome">
+        <h1>Welcome!</h1>
+        <br><br>
+        <p>
+          This is in API for pollution rate detection across the world. You can check such value related to a specific location or more than one.
+          <br>
+          For further details about this, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.
+        </p>
+      </div>
+      <div class="page">
+        You can search a location by
+        <br>
+        <button type="button" id="button-name">Name</button> /
+        <button type="button" id="button-keyword">Keyword</button>
+        <br>
+        <input type="text" id="query" value="Milano">
+        <br>
+        or
+        <br>
+        <button type="button" id="button-geoloc">Geolocation</button>
+        <br>
+        <select name="keyword-results" size="1" class="hidden-elems" id="keyword-results"></select>
+        <br>
+        <div id="answer"></div>
+        <br>
+        <div id="agree">
+          <button type="button" id="button-agree" class="hidden-elems">Yes</button>
+          <button type="button" id="button-deny" class="hidden-elems">No</button>
+        </div>
       </div>
     </div>
   </body>
