@@ -14,10 +14,10 @@ a:hover{
   margin: 0px;
   width: 320px;
 }
-#intro, #page{
+#intro, #page, #agree{
   font-size: 16px;
 }
-#welcome, #page{
+#welcome, #page, #agree{
   width: 294px;
   padding: 10px;
   margin: 5px auto;
