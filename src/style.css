@@ -12,18 +12,16 @@
   background-color: #111;
   color: #eee;
 }
-.welcome, .page{
-  padding: 20px;
-}
 #wrapper{
   margin: 0px;
+  width: 320px;
   height: 97vh;
   display: flex;
   justify-content: center;
 }
-div{
-  width: 294px;
-  align-self: center;
+.welcome, .page{
+  padding: 20px;
+    width: 294px;
 }
 button{
   margin-top: 10px;
