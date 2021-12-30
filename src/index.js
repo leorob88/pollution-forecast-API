@@ -110,8 +110,7 @@ function locating(location, searching){
         //ask user if they want to try a name search
         document.getElementById("question").innerHTML = "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?";
       }
-      document.getElementById("page").style.visibility = "hidden";
-      document.getElementById("agree").insertBefore(document.getElementById("page"));
+      document.getElementById("page").insertAfter(document.getElementById("agree"));
       document.getElementById("agree").style.visibility = "visible";
     }
     //if response is found
