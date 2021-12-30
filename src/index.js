@@ -112,6 +112,7 @@ function locating(location, searching){
       }
       document.getElementById("page").style.visibility = "hidden";
       document.getElementById("agree").style.visibility = "visible";
+      document.getElementById("page").insertAfter(document.getElementById("agree"));
     }
     //if response is found
     else {
@@ -180,6 +181,7 @@ document.getElementById("keyword-results").addEventListener("change", selection)
 document.getElementById("button-agree").addEventListener("click", function(){
   document.getElementById("agree").style.visibility = "hidden";
   document.getElementById("page").style.visibility = "visible";
+  document.getElementById("agree").insertAfter(document.getElementById("page"));
   //if search was by name, try keyword search
   if (searching == 1){
     locating(`custom=${document.getElementById("query").value}`, 2);
@@ -196,6 +198,7 @@ document.getElementById("button-agree").addEventListener("click", function(){
 document.getElementById("button-deny").addEventListener("click", function(){
   document.getElementById("agree").style.visibility = "hidden";
   document.getElementById("page").style.visibility = "visible";
+  document.getElementById("agree").insertAfter(document.getElementById("page"));
   //if search was by name, tell user name result was not found
   if (searching == 1){
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
