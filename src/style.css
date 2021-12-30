@@ -1,6 +1,9 @@
 *{
   font-family: "Verdana", "Arial", serif;
 }
+div{
+  width: 294px;
+}
 .page, p{
   font-size: 14px;
 }
