@@ -178,7 +178,6 @@ document.getElementById("keyword-results").addEventListener("change", selection)
 
 //event listeners for "yes" and "no" buttons
 document.getElementById("button-agree").addEventListener("click", function(){
-  document.getElementById("agree").style.visibility = "hidden";
   waiting = false;
   //if search was by name, try keyword search
   if (searching == 1){
@@ -192,9 +191,9 @@ document.getElementById("button-agree").addEventListener("click", function(){
   else if (searching == 3) {
     locating(`city=${document.getElementById("query").value}`, 1);
   }
+  document.getElementById("agree").style.visibility = "hidden";
 });
 document.getElementById("button-deny").addEventListener("click", function(){
-  document.getElementById("agree").style.visibility = "hidden";
   waiting = false;
   console.log(searching + " " + waiting);
   //if search was by name, tell user name result was not found
@@ -209,4 +208,5 @@ document.getElementById("button-deny").addEventListener("click", function(){
   else if (searching == 3) {
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
   }
+  document.getElementById("agree").style.visibility = "hidden";
 });
