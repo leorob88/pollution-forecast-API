@@ -19,12 +19,10 @@ body{
 #wrapper{
   margin: 0px;
   width: 320px;
-  display: flex;
-  justify-content: center;
 }
 .welcome, .page{
   padding: 20px;
-    width: 294px;
+  width: 294px;
 }
 button{
   margin-top: 10px;
