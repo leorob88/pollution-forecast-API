@@ -67,7 +67,7 @@ function createOption(text){
 function selection(){
   let index = document.getElementById("keyword-results").selectedIndex;
   console.log(index);
-  if (index > -1){
+  if (index > -1 && !waiting){
     //shows info about the selected list result
     let currentResult = results.data[index];
     let aqi = currentResult.aqi;
@@ -163,15 +163,15 @@ function locating(location, searching){
 //event handlers for main interactions
 document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
-  locating(`city=${document.getElementById("query").value}`, 1);
+  if(!waiting){locating(`city=${document.getElementById("query").value}`, 1);}
 });
 document.getElementById("button-keyword").addEventListener("click", function(){
   //go and call main function with keyword input by user
-  locating(`custom=${document.getElementById("query").value}`, 2);
+  if(!waiting){locating(`custom=${document.getElementById("query").value}`, 2);}
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
-  locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
+  if(!waiting){locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);}
 });
 document.getElementById("keyword-results").addEventListener("change", selection);
 
