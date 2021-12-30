@@ -1,5 +1,5 @@
 *{
-  color: #aaa;
+  color: #ccc;
   font-family: "Verdana", "Arial", serif;
 }
 body{
@@ -12,7 +12,7 @@ body{
   width: 320px;
 }
 p, .page{
-  font-size: 20px;
+  font-size: 16px;
 }
 .welcome, .page{
   width: 294px;
