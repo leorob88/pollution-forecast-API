@@ -1,9 +1,6 @@
 *{
   font-family: "Verdana", "Arial", serif;
 }
-div{
-  width: 294px;
-}
 .page, p{
   font-size: 14px;
 }
@@ -19,11 +16,13 @@ div{
   padding: 20px;
 }
 #wrapper{
-  align-self: center;
   margin: 0px;
   height: 97vh;
   display: flex;
   justify-content: center;
+}
+div{
+  width: 294px;
 }
 button{
   margin-top: 10px;
