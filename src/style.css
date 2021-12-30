@@ -40,7 +40,7 @@ button, input, select{
   color: #222;
 }
 #keyword-results{
-  width: 100px;
+  width: 150px;
 }
 .hidden-elems{
   visibility: hidden;
