@@ -58,6 +58,7 @@ function createOption(text){
     listOption.value = text;
     listOption.innerHTML = text;
     listOption.className = "listOptions";
+    listOption.style.color = "#222";
     return listOption;
 }
 
