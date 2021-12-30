@@ -1,7 +1,7 @@
 
 import "./style.css";
 
-var userLatitude, userLongitude, results;
+var userLatitude, userLongitude, results, waiting;
 
 const geoLocOptions = {
   enableHighAccuracy: true,
@@ -62,6 +62,28 @@ function createOption(text){
     return listOption;
 }
 
+
+
+function selection(){
+  let index = document.getElementById("keyword-results").selectedIndex;
+  console.log(index);
+  if (index > -1){
+    //shows info about the selected list result
+    let currentResult = results.data[index];
+    let aqi = currentResult.aqi;
+    console.log(aqi);
+    //calculate distance between user and result
+    let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
+    //tell user the result and quality for the current result position
+    document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+    //if user position (and distance) is known, tell also the user how far they are from the stated station
+    if (far != null || far != undefined) {
+      document.getElementById("answer").innerHTML += ` The estimated distance from your position is about ${far} kilometers.`;
+    }
+  }
+}
+
+
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
   document.getElementById("answer").innerHTML = "";
@@ -76,42 +98,20 @@ function locating(location, searching){
       //if search was by name,
       if (searching == 1){
         //ask user if they want to try keyword search
-        let retry = confirm("I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?");
-        //if yes, try it
-        if (retry){
-          locating(`custom=${document.getElementById("query").value}`, 2);
-        }
-        //if not, tell user name result was not found
-        else {
-          document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
-        }
+        document.getElementById("question").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?";
       }
       //if search was by keyword,
       else if (searching == 2) {
         //ask user if they want to try geolocation search
-        let retry = confirm("I couldn't find any stations for pollution detection. Do you want to try a geolocation search?");
-        //if yes, try it
-        if (retry){
-          locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
-        }
-        //if not, tell user keyword result was not found
-        else {
-          document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
-        }
+        document.getElementById("question").innerHTML = "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?";
       }
       //if search was by geolocation,
       else if (searching == 3) {
         //ask user if they want to try a name search
-        let retry = confirm("I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?");
-        //if yes, try it
-        if (retry){
-          locating(`city=${document.getElementById("query").value}`, 1);
-        }
-        //if not, tell user geolocation result was not found
-        else {
-          document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
-        }
+        document.getElementById("question").innerHTML = "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?";
       }
+      document.getElementById("agree").style.visibility = "visible";
+      waiting = true;
     }
     //if response is found
     else {
@@ -160,7 +160,7 @@ function locating(location, searching){
   });
 }
 
-//click event handlers for buttons
+//event handlers for main interactions
 document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
   locating(`city=${document.getElementById("query").value}`, 1);
@@ -174,23 +174,38 @@ document.getElementById("button-geoloc").addEventListener("click", function(){
   locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
 });
 document.getElementById("keyword-results").addEventListener("change", selection);
-//PER QUALCHE RAGIONE, NON RECEPISCE IL CLICK/CHANGE
 
-function selection(){
-  let index = document.getElementById("keyword-results").selectedIndex;
-  console.log(index);
-  if (index > -1){
-    //shows info about the selected list result
-    let currentResult = results.data[index];
-    let aqi = currentResult.aqi;
-    console.log(aqi);
-    //calculate distance between user and result
-    let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
-    //tell user the result and quality for the current result position
-    document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-    //if user position (and distance) is known, tell also the user how far they are from the stated station
-    if (far != null || far != undefined) {
-      document.getElementById("answer").innerHTML += ` The estimated distance from your position is about ${far} kilometers.`;
-    }
+
+//event listeners for "yes" and "no" buttons
+document.getElementById("button-agree").addEventListener("click", function(){
+  document.getElementById("agree").style.visibility = "hidden";
+  waiting = false;
+  //if search was by name, try keyword search
+  if (searching == 1){
+    locating(`custom=${document.getElementById("query").value}`, 2);
   }
-}
+  //if search was by keyword, try geolocation search
+  else if (searching == 2) {
+    locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
+  }
+  //if search was by geolocation, try name search
+  else if (searching == 3) {
+    locating(`city=${document.getElementById("query").value}`, 1);
+  }
+});
+document.getElementById("button-deny").addEventListener("click", function(){
+  document.getElementById("agree").style.visibility = "hidden";
+  waiting = false;
+  //if search was by name, tell user name result was not found
+  if (searching == 1){
+    document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
+  }
+  //if search was by keyword, tell user keyword result was not found
+  else if (searching == 2) {
+    document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
+  }
+  //if search was by geolocation, tell user geolocation result was not found
+  else if (searching == 3) {
+    document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
+  }
+});

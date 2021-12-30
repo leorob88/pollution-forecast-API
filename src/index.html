@@ -7,15 +7,15 @@
   </head>
   <body>
     <div id="wrapper">
-      <div class="welcome">
+      <div id="welcome">
         <h1>Welcome!</h1>
-        <p>
+        <p id="intro">
           This is an API for pollution rate detection across the world. You can check such value related to a specific location or more than one.
           <br>
           For further details about this, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.
         </p>
       </div>
-      <div class="page">
+      <div id="page">
         You can search a location by
         <br>
         <button type="button" id="button-name">Name</button> /
@@ -30,11 +30,11 @@
         <select name="keyword-results" size="1" class="hidden-elems" id="keyword-results"></select>
         <br>
         <div id="answer"></div>
-        <br>
-        <div id="agree">
-          <button type="button" id="button-agree" class="hidden-elems">Yes</button>
-          <button type="button" id="button-deny" class="hidden-elems">No</button>
-        </div>
+      </div>
+      <div id="agree">
+        <p id="question"></p>
+        <button type="button" id="button-agree" class="hidden-elems">Yes</button>
+        <button type="button" id="button-deny" class="hidden-elems">No</button>
       </div>
     </div>
   </body>

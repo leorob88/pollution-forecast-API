@@ -14,10 +14,10 @@ a:hover{
   margin: 0px;
   width: 320px;
 }
-p, .page{
+#intro, #page{
   font-size: 16px;
 }
-.welcome, .page{
+#welcome, #page{
   width: 294px;
   padding: 10px;
   margin: 5px auto;
