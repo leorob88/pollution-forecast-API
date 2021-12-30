@@ -1,7 +1,7 @@
 
 import "./style.css";
 
-var userLatitude, userLongitude, results;
+var userLatitude, userLongitude, results, waiting;
 
 const geoLocOptions = {
   enableHighAccuracy: true,
@@ -67,7 +67,7 @@ function createOption(text){
 function selection(){
   let index = document.getElementById("keyword-results").selectedIndex;
   console.log(index);
-  if (index > -1){
+  if (index > -1 && !waiting){
     //shows info about the selected list result
     let currentResult = results.data[index];
     let aqi = currentResult.aqi;
@@ -110,8 +110,8 @@ function locating(location, searching){
         //ask user if they want to try a name search
         document.getElementById("question").innerHTML = "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?";
       }
-      document.getElementById("page").insertAfter(document.getElementById("agree"));
       document.getElementById("agree").style.visibility = "visible";
+      waiting = true;
     }
     //if response is found
     else {
@@ -163,15 +163,15 @@ function locating(location, searching){
 //event handlers for main interactions
 document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
-  locating(`city=${document.getElementById("query").value}`, 1);
+  if(!waiting){locating(`city=${document.getElementById("query").value}`, 1);}
 });
 document.getElementById("button-keyword").addEventListener("click", function(){
   //go and call main function with keyword input by user
-  locating(`custom=${document.getElementById("query").value}`, 2);
+  if(!waiting){locating(`custom=${document.getElementById("query").value}`, 2);}
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
-  locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
+  if(!waiting){locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);}
 });
 document.getElementById("keyword-results").addEventListener("change", selection);
 
@@ -179,8 +179,7 @@ document.getElementById("keyword-results").addEventListener("change", selection)
 //event listeners for "yes" and "no" buttons
 document.getElementById("button-agree").addEventListener("click", function(){
   document.getElementById("agree").style.visibility = "hidden";
-  document.getElementById("page").style.visibility = "visible";
-  document.getElementById("agree").insertAfter(document.getElementById("page"));
+  waiting = false;
   //if search was by name, try keyword search
   if (searching == 1){
     locating(`custom=${document.getElementById("query").value}`, 2);
@@ -196,8 +195,7 @@ document.getElementById("button-agree").addEventListener("click", function(){
 });
 document.getElementById("button-deny").addEventListener("click", function(){
   document.getElementById("agree").style.visibility = "hidden";
-  document.getElementById("page").style.visibility = "visible";
-  document.getElementById("agree").insertAfter(document.getElementById("page"));
+  waiting = false;
   //if search was by name, tell user name result was not found
   if (searching == 1){
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
