@@ -19,7 +19,6 @@ body{
 #wrapper{
   margin: 0px;
   width: 320px;
-  height: 97vh;
   display: flex;
   justify-content: center;
 }
