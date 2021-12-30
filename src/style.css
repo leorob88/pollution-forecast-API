@@ -1,6 +1,10 @@
 *{
   font-family: "Verdana", "Arial", serif;
 }
+body{
+  display: flex;
+  justify-content: center;
+}
 .page, p{
   font-size: 14px;
 }
