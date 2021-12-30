@@ -23,6 +23,7 @@
 }
 div{
   width: 294px;
+  align-self: center;
 }
 button{
   margin-top: 10px;
