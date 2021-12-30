@@ -1,4 +1,5 @@
 *{
+  color: #aaa;
   font-family: "Verdana", "Arial", serif;
 }
 body{
@@ -6,24 +7,19 @@ body{
   justify-content: center;
   background-color: #7b1a2d;
 }
-.page, p{
-  font-size: 14px;
-}
-.welcome{
-  background-color: #eee;
-  color: #111;
-}
-.page{
-  background-color: #111;
-  color: #eee;
-}
 #wrapper{
   margin: 0px;
   width: 320px;
 }
+p, .page{
+  font-size: 20px;
+}
 .welcome, .page{
-  padding: 20px;
   width: 294px;
+  padding: 10px;
+  margin: 5px auto;
+  border: solid #aaa 2px;
+  border-radius: 3px;
 }
 button{
   margin-top: 10px;
