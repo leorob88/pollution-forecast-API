@@ -196,7 +196,7 @@ document.getElementById("button-agree").addEventListener("click", function(){
 });
 document.getElementById("button-deny").addEventListener("click", function(){
   waiting = false;
-  console.log(searching + " " + waiting);
+  console.log(document.getElementById("question").value + " " + waiting);
   //if search was by name, tell user name result was not found
   if (document.getElementById("question").value == 1){
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
