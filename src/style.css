@@ -27,6 +27,8 @@ p, .page{
 button{
   margin-top: 10px;
   margin-bottom: 10px;
+  border: solid #765 2px;
+  border-radius: 3px;
 }
 button:hover{
   background-color: #c1eff5;
