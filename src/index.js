@@ -111,6 +111,7 @@ function locating(location, searching){
         document.getElementById("question").innerHTML = "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?";
       }
       document.getElementById("agree").style.visibility = "visible";
+      document.getElementById("question").value = searching;
       waiting = true;
     }
     //if response is found
@@ -180,15 +181,15 @@ document.getElementById("keyword-results").addEventListener("change", selection)
 document.getElementById("button-agree").addEventListener("click", function(){
   waiting = false;
   //if search was by name, try keyword search
-  if (searching == 1){
+  if (document.getElementById("question").value == 1){
     locating(`custom=${document.getElementById("query").value}`, 2);
   }
   //if search was by keyword, try geolocation search
-  else if (searching == 2) {
+  else if (document.getElementById("question").value == 2) {
     locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
   }
   //if search was by geolocation, try name search
-  else if (searching == 3) {
+  else if (document.getElementById("question").value == 3) {
     locating(`city=${document.getElementById("query").value}`, 1);
   }
   document.getElementById("agree").style.visibility = "hidden";
@@ -197,15 +198,15 @@ document.getElementById("button-deny").addEventListener("click", function(){
   waiting = false;
   console.log(searching + " " + waiting);
   //if search was by name, tell user name result was not found
-  if (searching == 1){
+  if (document.getElementById("question").value == 1){
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
   }
   //if search was by keyword, tell user keyword result was not found
-  else if (searching == 2) {
+  else if (document.getElementById("question").value == 2) {
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
   }
   //if search was by geolocation, tell user geolocation result was not found
-  else if (searching == 3) {
+  else if (document.getElementById("question").value == 3) {
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
   }
   document.getElementById("agree").style.visibility = "hidden";
