@@ -28,6 +28,9 @@ button{
 input, select{
   margin-bottom: 10px;
 }
+button, input, select{
+  color: #222;
+}
 #keyword-results{
   width: 100px;
 }
