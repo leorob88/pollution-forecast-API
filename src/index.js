@@ -112,7 +112,8 @@ function locating(location, searching){
       }
       console.log(document.getElementById("welcome").offsetTop);
       document.getElementById("agree").style.position = "fixed";
-      document.getElementById("agree").style.top = document.getElementById("welcome").style.top;
+      document.getElementById("agree").style.top = `${document.getElementById("welcome").offsetTop}px`;
+      document.getElementById("agree").style.left = `${document.getElementById("welcome").offsetLeft}px`;
       document.getElementById("agree").style.visibility = "visible";
       document.getElementById("question").value = searching;
       waiting = true;
