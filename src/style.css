@@ -27,7 +27,7 @@ a:hover{
 #agree{
   z-index: 1;
   position: fixed;
-  top: 400;
+  top: 400px;
 }
 button{
   margin-top: 10px;
