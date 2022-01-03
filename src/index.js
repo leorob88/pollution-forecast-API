@@ -23,7 +23,6 @@ signal.then(pos => {
 //calculate distance between 2 coordinates
 function distance(placeLatitude, placeLongitude){
   const radius = 6371e3; // metres
-  console.log(placeLatitude + " " + placeLongitude);
   const diam1 = placeLatitude * Math.PI/180;
   const diam2 = userLatitude * Math.PI/180;
   const diff1 = (userLatitude - placeLatitude) * Math.PI/180;
@@ -66,12 +65,10 @@ function createOption(text){
 
 function selection(){
   let index = document.getElementById("keyword-results").selectedIndex;
-  console.log(index);
   if (index > -1 && !waiting){
     //shows info about the selected list result
     let currentResult = results.data[index];
     let aqi = currentResult.aqi;
-    console.log(aqi);
     //calculate distance between user and result
     let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
     //tell user the result and quality for the current result position
@@ -93,7 +90,6 @@ function locating(location, searching){
   fetch(`/.netlify/functions/lambda?${location}`)
   .then(response => response.json())
   .then(data => {
-    console.log(data);
     //if response is not found,
     if (data.data == "Unknown station" || (searching == 2 && data.data.length == 0)){
       //if search was by name,
@@ -123,7 +119,6 @@ function locating(location, searching){
     else {
       //if search WAS by keyword (multiple possible result)
       if (searching == 2){
-        console.log("array " + data.data.length);
         //create list if there are more than 1 result
         if (data.data.length > 0){
           for (let i = 0; i < data.data.length; i++){
@@ -135,7 +130,6 @@ function locating(location, searching){
         }
         //store data into outer object
         results = data;
-        console.log(results);
         //selects the first result
         selection();
       }
@@ -203,7 +197,6 @@ document.getElementById("button-agree").addEventListener("click", function(){
 });
 document.getElementById("button-deny").addEventListener("click", function(){
   waiting = false;
-  console.log(document.getElementById("question").value + " " + waiting);
   //if search was by name, tell user name result was not found
   if (document.getElementById("question").value == 1){
     document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
