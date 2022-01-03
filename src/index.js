@@ -110,7 +110,6 @@ function locating(location, searching){
         //ask user if they want to try a name search
         document.getElementById("question").innerHTML = "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?";
       }
-      console.log(document.getElementById("welcome").offsetTop);
       document.getElementById("agree").style.position = "fixed";
       document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
       document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
