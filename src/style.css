@@ -28,6 +28,8 @@ a:hover{
   z-index: 1;
   position: fixed;
   top: 400px;
+  left: 1px;
+  background-color: #7c1a2d;
 }
 button{
   margin-top: 10px;
