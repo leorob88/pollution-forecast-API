@@ -87,7 +87,8 @@ function selection(){
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
   document.getElementById("answer").innerHTML = "";
-    document.getElementById("keyword-results").style.visibility = "hidden";
+  document.getElementById("keyword-results").innerHTML = "";
+  document.getElementById("keyword-results").style.visibility = "hidden";
   //fetch infos with given input via buttons (or recursive function)
   fetch(`/.netlify/functions/lambda?${location}`)
   .then(response => response.json())
@@ -124,9 +125,8 @@ function locating(location, searching){
       if (searching == 2){
         console.log("array " + data.data.length);
         //create list if there are more than 1 result
-        if (data.data.length > 1){
+        if (data.data.length > 0){
           document.getElementById("keyword-results").style.visibility = "visible";
-          document.getElementById("keyword-results").innerHTML = "";
           for (let i = 0; i < data.data.length; i++){
             document.getElementById("keyword-results").append(createOption(data.data[i].station.name));
           }
@@ -161,7 +161,7 @@ function locating(location, searching){
     }
   })
   .catch(function (error) {
-    document.getElementById("answer").innerHTML = `Something went wrong. The process brought up this error message: ${error.message}`;
+    document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
   });
 }
 
