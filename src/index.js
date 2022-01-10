@@ -201,7 +201,7 @@ document.getElementById("button-keyword").addEventListener("click", function(){
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
-  getResult(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
+  locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
 document.getElementById("keyword-results").addEventListener("change", selecting(results));
 
