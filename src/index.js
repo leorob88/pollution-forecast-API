@@ -3,6 +3,22 @@ import "./style.css";
 
 var userLatitude, userLongitude, results;
 
+var fetchTarget = [
+  `city=${document.getElementById("query").value}`,
+  `custom=${document.getElementById("query").value}`,
+  `latit=${userLatitude}&longi=${userLongitude}`
+];
+var helpUser = [
+  "I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?",
+  "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?",
+  "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?"
+];
+var unableToFind = [
+  "I couldn't find any stations for pollution detection in the location you searched for.",
+  "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.",
+  "I couldn't find any stations for pollution detection. Be sure to provide your current position"
+];
+
 const geoLocOptions = {
   enableHighAccuracy: true,
   maximumAge: 30000,
@@ -20,16 +36,136 @@ signal.then(pos => {
   console.log(error);
 });
 
+function getResult(location, searching){
+  resetValues();
+  results = locating(location);
+  if (results = "error") {
+    document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
+    return;
+  }
+  //if response is not found,
+  if (results.data == "Unknown station" || (searching == 1 && results.data.length == 0)){
+    provideHelp(searching);
+    return;
+  }
+  //if response is found
+  //if search WAS by keyword (multiple possible result)
+  if (searching == 1){
+    for (let i = 0; i < results.data.length; i++){
+      document.getElementById("keyword-results").append(createOption(results.data[i].station.name));
+    }
+    if (results.data.length > 1){
+      document.getElementById("keyword-results").style.visibility = "visible";
+    }
+    //selects the first result
+    document.getElementById("answer").innerHTML = selecting(results);
+  }
+  //if search WAS NOT by keyword (unique result)
+  else {
+    //take notice of aqi value for further text info
+    let aqi = results.data.aqi;
+    //calculate distance from user for first result
+    let far = getDistance(results.data.city.geo[0], results.data.city.geo[1]);
+    //if search was by name
+    if (searching == 0) {
+      //tell user the result and quality for their searched position
+      document.getElementById("answer").innerHTML = `The estimated AQI for ${results.data.city.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+    }
+    //if search was by geolocation
+    else if (searching == 2) {
+      //tell user the result and quality for their current position (nearest)
+      document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${results.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+    }
+    //if user position (and distance) is known, tell also the user how far they are from the stated station
+    if (far != null || far != undefined) {
+      document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
+    }
+  }
+}
+
+function resetValues(){
+  document.getElementById("answer").innerHTML = "";
+  document.getElementById("keyword-results").innerHTML = "";
+  document.getElementById("keyword-results").style.visibility = "hidden";
+}
+
+//main function for fetch, expects data to search for and a value stating the type of search
+function locating(location){
+  //fetch infos with given input via buttons (or recursive function)
+  fetch(`/.netlify/functions/lambda?${location}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    return data;
+  })
+  .catch(function (error) {
+    return `error`;
+  });
+}
+
+function provideHelp(searching){
+  document.getElementById("agree").style.position = "fixed";
+  document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
+  document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
+  document.getElementById("agree").style.visibility = "visible";
+  document.getElementById("page").style.visibility = "hidden";
+  document.getElementById("question").innerHTML = helpUser[searching];
+  document.getElementById("question").value = searching;
+}
+
+function userFeedback(answer, searching){
+  if (answer == "no"){
+    document.getElementById("answer").innerHTML = unableToFind[searching];
+    backToPage();
+    return;
+  }
+  let newSearching = searching == 2 ? 0 : searching + 1;
+  let newFetch = fetchTarget[newSearching];
+  getResult(newFetch, newSearching);
+  backToPage();
+}
+
+function backToPage(){
+  document.getElementById("agree").style.visibility = "hidden";
+  document.getElementById("page").style.visibility = "visible";
+}
+
+function createOption(text){
+    let listOption = document.createElement("option");
+    listOption.id = "option" + (document.getElementById("keyword-results").options.length + 1);
+    listOption.value = text;
+    listOption.innerHTML = text;
+    listOption.className = "listOptions";
+    listOption.style.color = "#222";
+    return listOption;
+}
+
+function selecting(results){
+  let index = document.getElementById("keyword-results").selectedIndex;
+  //shows info about the selected list result
+  let currentResult = results.data[index];
+  let aqi = currentResult.aqi;
+  //calculate distance between user and result
+  let far = getDistance(currentResult.station.geo[0], currentResult.station.geo[1]);
+  //tell user the result and quality for the current result position
+  let resultMessage = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+  //if user position (and distance) is known, tell also the user how far they are from the stated station
+  if (far != null || far != undefined) {
+    resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
+  }
+  return resultMessage;
+}
+
 //calculate distance between 2 coordinates
-function distance(placeLatitude, placeLongitude){
+function getDistance(placeLatitude, placeLongitude){
   const radius = 6371e3; // metres
-  const diam1 = placeLatitude * Math.PI/180;
-  const diam2 = userLatitude * Math.PI/180;
-  const diff1 = (userLatitude - placeLatitude) * Math.PI/180;
-  const diff2 = (userLongitude - placeLongitude) * Math.PI/180;
-  const a = Math.sin(diff1/2) * Math.sin(diff1/2) +
-            Math.cos(diam1) * Math.cos(diam2) *
-            Math.sin(diff2/2) * Math.sin(diff2/2);
+  const diameter1 = placeLatitude * Math.PI/180;
+  const diameter2 = userLatitude * Math.PI/180;
+  const difference1 = (userLatitude - placeLatitude) * Math.PI/180;
+  const difference2 = (userLongitude - placeLongitude) * Math.PI/180;
+  const a = Math.sin(difference1/2) * Math.sin(difference1/2) +
+            Math.cos(diameter1) * Math.cos(diameter2) *
+            Math.sin(difference2/2) * Math.sin(difference2/2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   const d = radius * c / 1000; // in kilometres
   return Math.round(d);
@@ -51,169 +187,26 @@ function quality(aqi){
   }
 }
 
-function createOption(text){
-    let listOption = document.createElement("option");
-    listOption.id = "option" + (document.getElementById("keyword-results").options.length + 1);
-    listOption.value = text;
-    listOption.innerHTML = text;
-    listOption.className = "listOptions";
-    listOption.style.color = "#222";
-    return listOption;
-}
-
-
-
-function selection(){
-  let index = document.getElementById("keyword-results").selectedIndex;
-  if (index > -1){
-    //shows info about the selected list result
-    let currentResult = results.data[index];
-    let aqi = currentResult.aqi;
-    //calculate distance between user and result
-    let far = distance(currentResult.station.geo[0], currentResult.station.geo[1]);
-    //tell user the result and quality for the current result position
-    document.getElementById("answer").innerHTML = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-    //if user position (and distance) is known, tell also the user how far they are from the stated station
-    if (far != null || far != undefined) {
-      document.getElementById("answer").innerHTML += ` The estimated distance from your position is about ${far} kilometers.`;
-    }
-  }
-}
-
-function resetValues(){
-  document.getElementById("answer").innerHTML = "";
-  document.getElementById("keyword-results").innerHTML = "";
-  document.getElementById("keyword-results").style.visibility = "hidden";
-}
-
-function getResult(){
-
-}
-
-//main function for fetch, expects data to search for and a value stating the type of search
-function locating(location, searching){
-  resetValues();
-  //fetch infos with given input via buttons (or recursive function)
-  fetch(`/.netlify/functions/lambda?${location}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    //if response is not found,
-    if (data.data == "Unknown station" || (searching == 2 && data.data.length == 0)){
-      //if search was by name,
-      if (searching == 1){
-        //ask user if they want to try keyword search
-        document.getElementById("question").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?";
-      }
-      //if search was by keyword,
-      else if (searching == 2) {
-        //ask user if they want to try geolocation search
-        document.getElementById("question").innerHTML = "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?";
-      }
-      //if search was by geolocation,
-      else if (searching == 3) {
-        //ask user if they want to try a name search
-        document.getElementById("question").innerHTML = "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?";
-      }
-      document.getElementById("agree").style.position = "fixed";
-      document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
-      document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
-      document.getElementById("agree").style.visibility = "visible";
-      document.getElementById("page").style.visibility = "hidden";
-      document.getElementById("question").value = searching;
-    }
-    //if response is found
-    else {
-      //if search WAS by keyword (multiple possible result)
-      if (searching == 2){
-        //create list if there are more than 1 result
-        if (data.data.length > 0){
-          for (let i = 0; i < data.data.length; i++){
-            document.getElementById("keyword-results").append(createOption(data.data[i].station.name));
-          }
-        }
-        if (data.data.length > 1){
-          document.getElementById("keyword-results").style.visibility = "visible";
-        }
-        //store data into outer object
-        results = data;
-        //selects the first result
-        selection();
-      }
-      //if search WAS NOT by keyword (unique result)
-      else {
-        //take notice of aqi value for further text info
-        let aqi = data.data.aqi;
-        //calculate distance from user for first result
-        let far = distance(data.data.city.geo[0], data.data.city.geo[1]);
-        //if search was by name
-        if (searching == 1) {
-          //tell user the result and quality for their searched position
-          document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-        }
-        //if search was by geolocation
-        else if (searching == 3) {
-          //tell user the result and quality for their current position (nearest)
-          document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-        }
-        //if user position (and distance) is known, tell also the user how far they are from the stated station
-        if (far != null || far != undefined) {
-          document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
-        }
-      }
-    }
-  })
-  .catch(function (error) {
-    document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
-  });
-}
-
 //event listeners for main interactions
 document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
-  locating(`city=${document.getElementById("query").value}`, 1);
+  getResult(fetchTarget[this.value], this.value);
 });
 document.getElementById("button-keyword").addEventListener("click", function(){
   //go and call main function with keyword input by user
-  locating(`custom=${document.getElementById("query").value}`, 2);
+  getResult(fetchTarget[this.value], this.value);
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
-  locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
+  getResult(fetchTarget[this.value], this.value);
 });
-document.getElementById("keyword-results").addEventListener("change", selection);
+document.getElementById("keyword-results").addEventListener("change", selecting(results));
 
 
 //event listeners for "yes" and "no" buttons
 document.getElementById("button-agree").addEventListener("click", function(){
-  //if search was by name, try keyword search
-  if (document.getElementById("question").value == 1){
-    locating(`custom=${document.getElementById("query").value}`, 2);
-  }
-  //if search was by keyword, try geolocation search
-  else if (document.getElementById("question").value == 2) {
-    locating(`latit=${userLatitude}&longi=${userLongitude}`, 3);
-  }
-  //if search was by geolocation, try name search
-  else if (document.getElementById("question").value == 3) {
-    locating(`city=${document.getElementById("query").value}`, 1);
-  }
-  document.getElementById("agree").style.visibility = "hidden";
-  document.getElementById("page").style.visibility = "visible";
+  userFeedback("yes", document.getElementById("question").value);
 });
 document.getElementById("button-deny").addEventListener("click", function(){
-  //if search was by name, tell user name result was not found
-  if (document.getElementById("question").value == 1){
-    document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection in the location you searched for.";
-  }
-  //if search was by keyword, tell user keyword result was not found
-  else if (document.getElementById("question").value == 2) {
-    document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.";
-  }
-  //if search was by geolocation, tell user geolocation result was not found
-  else if (document.getElementById("question").value == 3) {
-    document.getElementById("answer").innerHTML = "I couldn't find any stations for pollution detection. Be sure to provide your current position";
-  }
-  document.getElementById("agree").style.visibility = "hidden";
-  document.getElementById("page").style.visibility = "visible";
+  userFeedback("no", document.getElementById("question").value);
 });
