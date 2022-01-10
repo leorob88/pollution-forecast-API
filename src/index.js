@@ -198,7 +198,9 @@ document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
-document.getElementById("keyword-results").addEventListener("change", selecting);
+document.getElementById("keyword-results").addEventListener("change", function(){
+  console.log(document.getElementById("keyword-results").selectedIndex);
+});
 
 
 //event listeners for "yes" and "no" buttons
