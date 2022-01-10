@@ -115,7 +115,7 @@ function userFeedback(answer, searching){
     backToPage();
     return;
   }
-  let newSearching = searching == 2 ? 0 : 1 + searching;
+  let newSearching = searching == 2 ? 0 : number(searching) + 1;
   let newFetch = newSearching == 0 ? `city=${document.getElementById("query").value}` :
                  newSearching == 1 ? `custom=${document.getElementById("query").value}` :
                  `latit=${userLatitude}&longi=${userLongitude}`;
