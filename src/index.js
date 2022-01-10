@@ -23,21 +23,16 @@ const geoLocOptions = {
   timeout: 27000
 };
 
-//tries to get current user position
 const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
 signal.then(pos => {
-  //store coordinates
   userLatitude = pos.coords.latitude;
   userLongitude = pos.coords.longitude;
 }).catch(error => {
-  //on error, log error
   console.log(error);
 });
 
-//main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
   resetValues();
-  //fetch infos with given input via buttons (or recursive function)
   fetch(`/.netlify/functions/lambda?${location}`)
   .then(response => response.json())
   .then(data => {
@@ -60,13 +55,10 @@ function getResult(data, searching){
     document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
     return;
   }
-  //if response is not found,
   if (results.data == "Unknown station" || (searching == 1 && results.data.length == 0)){
     provideHelp(searching);
     return;
   }
-  //if response is found
-  //if search WAS by keyword (multiple possible result)
   if (searching == 1){
     for (let i = 0; i < results.data.length; i++){
       document.getElementById("keyword-results").append(createOption(results.data[i].station.name));
@@ -74,29 +66,14 @@ function getResult(data, searching){
     if (results.data.length > 1){
       document.getElementById("keyword-results").style.visibility = "visible";
     }
-    //selects the first result
     selecting();
   }
-  //if search WAS NOT by keyword (unique result)
   else {
-    //take notice of aqi value for further text info
+    let name = results.data.city.name;
     let aqi = results.data.aqi;
-    //calculate distance from user for first result
     let far = getDistance(results.data.city.geo[0], results.data.city.geo[1]);
-    //if search was by name
-    if (searching == 0) {
-      //tell user the result and quality for their searched position
-      document.getElementById("answer").innerHTML = `The estimated AQI for ${results.data.city.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-    }
-    //if search was by geolocation
-    else if (searching == 2) {
-      //tell user the result and quality for their current position (nearest)
-      document.getElementById("answer").innerHTML = `The nearest station to your estimated position is in ${results.data.city.name}. The estimated AQI has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-    }
-    //if user position (and distance) is known, tell also the user how far they are from the stated station
-    if (far != null || far != undefined) {
-      document.getElementById("answer").innerHTML += `The estimated distance from your position is about ${far} kilometers.`;
-    }
+    let judgement = quality(aqi);
+    showResult(name, aqi, far, judgement, searching);
   }
 }
 
@@ -139,22 +116,14 @@ function createOption(text){
 function selecting(){
   let index = document.getElementById("keyword-results").selectedIndex;
   if (index > -1){
-    //shows info about the selected list result
-    let currentResult = results.data[index];
-    let aqi = currentResult.aqi;
-    //calculate distance between user and result
-    let far = getDistance(currentResult.station.geo[0], currentResult.station.geo[1]);
-    //tell user the result and quality for the current result position
-    let resultMessage = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-    //if user position (and distance) is known, tell also the user how far they are from the stated station
-    if (far != null || far != undefined) {
-      resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
-    }
-    document.getElementById("answer").innerHTML = resultMessage;
+    let name = results.data[index].station.name;
+    let aqi = results.data[index].aqi;
+    let far = getDistance(results.data[index].station.geo[0], results.data[index].station.geo[1]);
+    let judgement = quality(aqi);
+    showResult(name, aqi, far, judgement, 1);
   }
 }
 
-//calculate distance between 2 coordinates
 function getDistance(placeLatitude, placeLongitude){
   const radius = 6371e3; // metres
   const diameter1 = placeLatitude * Math.PI/180;
@@ -185,25 +154,39 @@ function quality(aqi){
   }
 }
 
-//event listeners for main interactions
+function showResult(name, aqi, far, judgement, searching){
+  let resultMessage;
+  if (searching == 2){
+    resultMessage = `The nearest station to your estimated position is in ${name}. The estimated AQI has a value of ${aqi}.`
+  }else{
+    resultMessage = `The estimated AQI for ${name} has a value of ${aqi}.`
+  }
+  resultMessage += ` The pollution rate is ${quality(aqi)}.`;
+  if (far != null || far != undefined) {
+    resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
+  }
+  document.getElementById("answer").innerHTML = resultMessage;
+}
+
 document.getElementById("button-name").addEventListener("click", function(){
-  //go and call main function with name input by user
   locating(`city=${document.getElementById("query").value}`, this.value);
 });
 document.getElementById("button-keyword").addEventListener("click", function(){
-  //go and call main function with keyword input by user
   locating(`custom=${document.getElementById("query").value}`, this.value);
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
-  //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
 document.getElementById("keyword-results").addEventListener("change", function(){
-  console.log(document.getElementById("keyword-results").selectedIndex);
+  let index = document.getElementById("keyword-results").selectedIndex;
+  if (index > -1){
+    let name = results.data[index].station.name;
+    let aqi = results.data[index].aqi;
+    let far = getDistance(results.data[index].station.geo[0], results.data[index].station.geo[1]);
+    let judgement = quality(aqi);
+    showResult(name, aqi, far, judgement, 1);
+  }
 });
-
-
-//event listeners for "yes" and "no" buttons
 document.getElementById("button-agree").addEventListener("click", function(){
   userFeedback("yes", document.getElementById("question").value);
 });
