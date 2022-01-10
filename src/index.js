@@ -182,16 +182,7 @@ document.getElementById("button-keyword").addEventListener("click", function(){
 document.getElementById("button-geoloc").addEventListener("click", function(){
   locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
-document.getElementById("keyword-results").addEventListener("change", function(){
-  let index = document.getElementById("keyword-results").selectedIndex;
-  if (index > -1){
-    let name = results.data[index].station.name;
-    let aqi = results.data[index].aqi;
-    let far = getDistance(results.data[index].station.geo[0], results.data[index].station.geo[1]);
-    let judgement = quality(aqi);
-    showResult(name, aqi, far, judgement, 1);
-  }
-});
+document.getElementById("keyword-results").addEventListener("change", selecting);
 document.getElementById("button-agree").addEventListener("click", function(){
   userFeedback("yes", document.getElementById("question").value);
 });
