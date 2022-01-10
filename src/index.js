@@ -53,7 +53,7 @@ function locating(location, searching){
 function getResult(data, searching){
   resetValues();
   results = data;
-  if (results = "error") {
+  if (results == "error") {
     document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
     return;
   }
