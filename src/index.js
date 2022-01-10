@@ -36,9 +36,23 @@ signal.then(pos => {
   console.log(error);
 });
 
-function getResult(location, searching){
+//main function for fetch, expects data to search for and a value stating the type of search
+function locating(location, searching){
+  //fetch infos with given input via buttons (or recursive function)
+  fetch(`/.netlify/functions/lambda?${location}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    getResult(data, searching);
+  })
+  .catch(function (error) {
+    getResult(`error`, searching);
+  });
+}
+
+function getResult(data, searching){
   resetValues();
-  results = locating(location);
+  results = data;
   if (results = "error") {
     document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
     return;
@@ -87,20 +101,6 @@ function resetValues(){
   document.getElementById("answer").innerHTML = "";
   document.getElementById("keyword-results").innerHTML = "";
   document.getElementById("keyword-results").style.visibility = "hidden";
-}
-
-//main function for fetch, expects data to search for and a value stating the type of search
-function locating(location){
-  //fetch infos with given input via buttons (or recursive function)
-  fetch(`/.netlify/functions/lambda?${location}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    return data;
-  })
-  .catch(function (error) {
-    return `error`;
-  });
 }
 
 function provideHelp(searching){
