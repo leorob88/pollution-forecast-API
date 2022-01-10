@@ -47,7 +47,6 @@ function locating(location, searching){
   })
   .catch(function (error) {
     console.log(error.message);
-    getResult(`error`, searching);
   });
 }
 
