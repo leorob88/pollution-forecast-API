@@ -68,7 +68,7 @@ function getResult(data, searching){
       document.getElementById("keyword-results").style.visibility = "visible";
     }
     //selects the first result
-    document.getElementById("answer").innerHTML = selecting();
+    selecting();
   }
   //if search WAS NOT by keyword (unique result)
   else {
@@ -152,7 +152,7 @@ function selecting(){
     if (far != null || far != undefined) {
       resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
     }
-    return resultMessage;
+    document.getElementById("answer").innerHTML = resultMessage;
   }
 }
 
