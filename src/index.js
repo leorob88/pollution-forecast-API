@@ -142,18 +142,20 @@ function createOption(text){
 
 function selecting(results){
   let index = document.getElementById("keyword-results").selectedIndex;
-  //shows info about the selected list result
-  let currentResult = results.data[index];
-  let aqi = currentResult.aqi;
-  //calculate distance between user and result
-  let far = getDistance(currentResult.station.geo[0], currentResult.station.geo[1]);
-  //tell user the result and quality for the current result position
-  let resultMessage = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
-  //if user position (and distance) is known, tell also the user how far they are from the stated station
-  if (far != null || far != undefined) {
-    resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
+  if (index > -1){
+    //shows info about the selected list result
+    let currentResult = results.data[index];
+    let aqi = currentResult.aqi;
+    //calculate distance between user and result
+    let far = getDistance(currentResult.station.geo[0], currentResult.station.geo[1]);
+    //tell user the result and quality for the current result position
+    let resultMessage = `The estimated AQI for ${currentResult.station.name} has a value of ${aqi}. The pollution rate is ${quality(aqi)}.`;
+    //if user position (and distance) is known, tell also the user how far they are from the stated station
+    if (far != null || far != undefined) {
+      resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
+    }
+    return resultMessage;
   }
-  return resultMessage;
 }
 
 //calculate distance between 2 coordinates
