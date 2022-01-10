@@ -192,15 +192,15 @@ function quality(aqi){
 //event listeners for main interactions
 document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
-  getResult(fetchTarget[this.value], this.value);
+  getResult(`city=${document.getElementById("query").value}`, this.value);
 });
 document.getElementById("button-keyword").addEventListener("click", function(){
   //go and call main function with keyword input by user
-  getResult(fetchTarget[this.value], this.value);
+  getResult(`custom=${document.getElementById("query").value}`, this.value);
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
-  getResult(fetchTarget[this.value], this.value);
+  getResult(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
 document.getElementById("keyword-results").addEventListener("change", selecting(results));
 
