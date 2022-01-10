@@ -38,11 +38,11 @@ signal.then(pos => {
 
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
+  console.log(location);
   //fetch infos with given input via buttons (or recursive function)
   fetch(`/.netlify/functions/lambda?${location}`)
   .then(response => response.json())
   .then(data => {
-    console.log(data);
     getResult(data, searching);
   })
   .catch(function (error) {
