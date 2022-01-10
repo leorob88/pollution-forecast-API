@@ -1,5 +1,8 @@
 
 import "./style.css";
+document.getElementById("agree").style.position = "fixed";
+document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
+document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
 
 var userLatitude, userLongitude, results;
 
@@ -43,6 +46,12 @@ function locating(location, searching){
   .catch(function (error) {
     getResult("error", searching);
   });
+}
+
+function resetValues(){
+  document.getElementById("answer").innerHTML = "";
+  document.getElementById("keyword-results").innerHTML = "";
+  document.getElementById("keyword-results").style.visibility = "hidden";
 }
 
 function getResult(data, searching){
@@ -91,16 +100,7 @@ function getResult(data, searching){
   }
 }
 
-function resetValues(){
-  document.getElementById("answer").innerHTML = "";
-  document.getElementById("keyword-results").innerHTML = "";
-  document.getElementById("keyword-results").style.visibility = "hidden";
-}
-
 function provideHelp(searching){
-  document.getElementById("agree").style.position = "fixed";
-  document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
-  document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
   document.getElementById("agree").style.visibility = "visible";
   document.getElementById("page").style.visibility = "hidden";
   document.getElementById("question").innerHTML = helpUser[searching];
