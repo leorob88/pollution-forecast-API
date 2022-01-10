@@ -68,7 +68,7 @@ function getResult(data, searching){
       document.getElementById("keyword-results").style.visibility = "visible";
     }
     //selects the first result
-    document.getElementById("answer").innerHTML = selecting(results);
+    document.getElementById("answer").innerHTML = selecting();
   }
   //if search WAS NOT by keyword (unique result)
   else {
@@ -138,7 +138,7 @@ function createOption(text){
     return listOption;
 }
 
-function selecting(results){
+function selecting(){
   let index = document.getElementById("keyword-results").selectedIndex;
   if (index > -1){
     //shows info about the selected list result
@@ -200,7 +200,7 @@ document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
   locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
-document.getElementById("keyword-results").addEventListener("change", selecting(results));
+document.getElementById("keyword-results").addEventListener("change", selecting);
 
 
 //event listeners for "yes" and "no" buttons
