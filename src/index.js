@@ -3,11 +3,6 @@ import "./style.css";
 
 var userLatitude, userLongitude, results;
 
-var fetchTarget = [
-  `city=${document.getElementById("query").value}`,
-  `custom=${document.getElementById("query").value}`,
-  `latit=${userLatitude}&longi=${userLongitude}`
-];
 var helpUser = [
   "I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?",
   "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?",
@@ -121,7 +116,9 @@ function userFeedback(answer, searching){
     return;
   }
   let newSearching = searching == 2 ? 0 : searching + 1;
-  let newFetch = fetchTarget[newSearching];
+  let newFetch = newSearching == 0 ? `city=${document.getElementById("query").value}` :
+                 newSearching == 1 ? `custom=${document.getElementById("query").value}` :
+                 `latit=${userLatitude}&longi=${userLongitude}`;
   getResult(newFetch, newSearching);
   backToPage();
 }
@@ -193,15 +190,15 @@ function quality(aqi){
 //event listeners for main interactions
 document.getElementById("button-name").addEventListener("click", function(){
   //go and call main function with name input by user
-  getResult(`city=${document.getElementById("query").value}`, this.value);
+  locating(`city=${document.getElementById("query").value}`, this.value);
 });
 document.getElementById("button-keyword").addEventListener("click", function(){
   //go and call main function with keyword input by user
-  getResult(`custom=${document.getElementById("query").value}`, this.value);
+  locating(`custom=${document.getElementById("query").value}`, this.value);
 });
 document.getElementById("button-geoloc").addEventListener("click", function(){
   //go and call main function with user current position
-  locating(fetchTarget[this.value], this.value);
+  locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
 });
 document.getElementById("keyword-results").addEventListener("change", selecting(results));
 
