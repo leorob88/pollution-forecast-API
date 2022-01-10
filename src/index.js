@@ -1,8 +1,5 @@
 
 import "./style.css";
-document.getElementById("agree").style.position = "fixed";
-document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
-document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
 
 var userLatitude, userLongitude, results;
 
@@ -78,6 +75,9 @@ function getResult(data, searching){
 }
 
 function provideHelp(searching){
+  document.getElementById("agree").style.position = "fixed";
+  document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
+  document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
   document.getElementById("agree").style.visibility = "visible";
   document.getElementById("page").style.visibility = "hidden";
   document.getElementById("question").innerHTML = helpUser[searching];
