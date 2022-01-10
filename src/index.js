@@ -33,7 +33,6 @@ signal.then(pos => {
 
 //main function for fetch, expects data to search for and a value stating the type of search
 function locating(location, searching){
-  console.log(location);
   resetValues();
   //fetch infos with given input via buttons (or recursive function)
   fetch(`/.netlify/functions/lambda?${location}`)
@@ -48,7 +47,6 @@ function locating(location, searching){
 
 function getResult(data, searching){
   results = data;
-  console.log(results);
   if (results == "error") {
     document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
     return;
@@ -119,7 +117,6 @@ function userFeedback(answer, searching){
   let newFetch = newSearching == 0 ? `city=${document.getElementById("query").value}` :
                  newSearching == 1 ? `custom=${document.getElementById("query").value}` :
                  `latit=${userLatitude}&longi=${userLongitude}`;
-  console.log(newFetch  + " " + newSearching);
   locating(newFetch, newSearching);
   backToPage();
 }
