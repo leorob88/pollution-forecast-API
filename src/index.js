@@ -119,7 +119,7 @@ function userFeedback(answer, searching){
   let newFetch = newSearching == 0 ? `city=${document.getElementById("query").value}` :
                  newSearching == 1 ? `custom=${document.getElementById("query").value}` :
                  `latit=${userLatitude}&longi=${userLongitude}`;
-  getResult(newFetch, newSearching);
+  locating(newFetch, newSearching);
   backToPage();
 }
 
