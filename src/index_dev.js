@@ -1,75 +1,206 @@
 
-var userLatitude, userLongitude;
+  import "./style.css";
 
-const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject));
-signal.then(pos => {
-  //store coordinates
-  userLatitude = pos.coords.latitude;
-  userLongitude = pos.coords.longitude;
-  //calls main function with input target given by button (stored coordinates above)
-  console.log(userLatitude + " ciao " + userLongitude);
-});
+  var userLatitude, userLongitude, results;
 
-async function requestPollutionData() {
+  var helpUser = [
+    "I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?",
+    "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?",
+    "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?"
+  ];
+  var unableToFind = [
+    "I couldn't find any stations for pollution detection in the location you searched for.",
+    "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.",
+    "I couldn't find any stations for pollution detection. Be sure to provide your current position"
+  ];
 
-  const API_KEY = process.env.API_KEY;
+  const geoLocOptions = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 27000
+  };
 
-  var cityQuery = document.getElementById("query").value;
+  const signal = new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, geoLocOptions));
+  signal.then(pos => {
+    userLatitude = pos.coords.latitude;
+    userLongitude = pos.coords.longitude;
+  }).catch(error => {
+    console.log(error);
+  });
 
-  //calculate distance between 2 coordinates (45;9 -- 46;11)
-  const radius = 6371e3; // metres
-  const diam1 = 45.470501 * Math.PI/180; // φ, λ in radians
-  const diam2 = 46.5338368 * Math.PI/180;
-  const diff1 = (46.5338368 - 45.470501) * Math.PI/180;
-  const diff2 = (11.2427008 - 9.19746075) * Math.PI/180;
-
-  const a = Math.sin(diff1/2) * Math.sin(diff1/2) +
-            Math.cos(diam1) * Math.cos(diam2) *
-            Math.sin(diff2/2) * Math.sin(diff2/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
-  const d = radius * c / 1000; // in kilometres
-  console.log(d + " kilometers");
-
-  const response = await fetch("https://api.waqi.info/search/?keyword=" + cityQuery /*"here"*/ + "&token=" + API_KEY);
-  const data = await response.json();
-  console.log(data);
-  if (data.data == "Unknown station"){
-    document.getElementById("answer").innerHTML = "The location you searched for has no stations for pollution detection.";
-  }
-  else{
-    var aqi = data.data.aqi;
-    var more;
-    if (aqi > 300){
-      more = "hazardous";
-    }else if (aqi > 200) {
-      more = "very unhealthy";
-    }else if (aqi > 150) {
-      more = "unhealthy";
-    }else if (aqi > 100) {
-      more = "unhealthy for sensitive groups";
-    }else if (aqi > 50) {
-      more = "moderate";
-    }else {
-      more = "good";
+  async function locating(location, searching){
+    resetValues();
+    let data;
+    const API_KEY = process.env.API_KEY;
+    let cityQuery = document.getElementById("query").value;
+    if (searching == 0){
+      const response = await fetch(`https://api.waqi.info/feed/${cityQuery}/?token=${API_KEY}`);
+      data = await response.json();
+    }else if (searching == 1) {
+      const response = await fetch(`https://api.waqi.info/search/?keyword=${cityQuery}&token=${API_KEY}`);
+      data = await response.json();
+    }else if (searching == 2) {
+      const response = await fetch(`https://api.waqi.info/search/?keyword=here&token=${API_KEY}`);
+      data = await response.json();
     }
-    //document.getElementById("answer").innerHTML = `The estimated AQI for ${data.data.city.name} has a value of ${aqi}. The pollution rate is ${more}.`;
-    document.getElementById("answer").innerHTML += `The nearest station to your estimated position is in ${data.data.city.name}. The estimated AQI has a value of ${data.data.aqi}. The pollution rate is ${more}.`;
-    document.getElementById("answer").innerHTML += ` For further details, you can check out the reference website infos <a target="_blank" href="https://www.airnow.gov/aqi/aqi-basics/">here</a>.`;
-  }
-}
+    console.log(data);
 
-//click event handlers for buttons
-document.getElementById("butt0").addEventListener("click", function(){
-  //go and call main function with text input by user
-  locating(`city=${document.getElementById("query").value}`);
-});
-//click event handlers for buttons
-document.getElementById("butt1").addEventListener("click", function(){
-  //go and call main function with text input by user
-  requestPollutionData();
-});
-document.getElementById("butt2").addEventListener("click", function(){
-  //go and find user coordinates and pass them to the main function
-  locating(`latit=${userLatitude}&longi=${userLongitude}`);
-});
+    fetch(`/.netlify/functions/lambda?${location}`)
+    .then(response => response.json())
+    .then(data => {
+      getResult(data, searching);
+    })
+    .catch(function (error) {
+      getResult("error", searching);
+    });
+  }
+
+  function resetValues(){
+    document.getElementById("answer").innerHTML = "";
+    document.getElementById("keyword-results").innerHTML = "";
+    document.getElementById("keyword-results").style.visibility = "hidden";
+  }
+
+  function getResult(data, searching){
+    results = data;
+    if (results == "error") {
+      document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
+      return;
+    }
+    if (results.data == "Unknown station" || (searching == 1 && results.data.length == 0)){
+      provideHelp(searching);
+      return;
+    }
+    if (searching == 1){
+      for (let i = 0; i < results.data.length; i++){
+        document.getElementById("keyword-results").append(createOption(results.data[i].station.name));
+      }
+      if (results.data.length > 1){
+        document.getElementById("keyword-results").style.visibility = "visible";
+      }
+      selecting();
+    }
+    else {
+      let name = results.data.city.name;
+      let aqi = results.data.aqi;
+      let far = getDistance(results.data.city.geo[0], results.data.city.geo[1]);
+      let judgement = quality(aqi);
+      showResult(name, aqi, far, judgement, searching);
+    }
+  }
+
+  function provideHelp(searching){
+    repositionDiv();
+    document.getElementById("agree").style.visibility = "visible";
+    document.getElementById("page").style.visibility = "hidden";
+    document.getElementById("question").innerHTML = helpUser[searching];
+    document.getElementById("question").value = searching;
+  }
+
+  function repositionDiv(){
+    document.getElementById("agree").style.position = "fixed";
+    document.getElementById("agree").style.top = `${document.getElementById("page").offsetTop - 5}px`;
+    document.getElementById("agree").style.left = `${document.getElementById("page").offsetLeft}px`;
+  }
+
+  function userFeedback(answer, searching){
+    if (answer == "no"){
+      document.getElementById("answer").innerHTML = unableToFind[searching];
+      backToPage();
+      return;
+    }
+    let newSearching = searching == 2 ? 0 : Number(searching) + 1;
+    let newFetch = newSearching == 0 ? `city=${document.getElementById("query").value}` :
+                   newSearching == 1 ? `custom=${document.getElementById("query").value}` :
+                   `latit=${userLatitude}&longi=${userLongitude}`;
+    locating(newFetch, newSearching);
+    backToPage();
+  }
+
+  function backToPage(){
+    document.getElementById("agree").style.visibility = "hidden";
+    document.getElementById("page").style.visibility = "visible";
+  }
+
+  function createOption(text){
+      let listOption = document.createElement("option");
+      listOption.id = "option" + (document.getElementById("keyword-results").options.length + 1);
+      listOption.value = text;
+      listOption.innerHTML = text;
+      listOption.className = "listOptions";
+      listOption.style.color = "#222";
+      return listOption;
+  }
+
+  function selecting(){
+    let index = document.getElementById("keyword-results").selectedIndex;
+    if (index > -1){
+      let name = results.data[index].station.name;
+      let aqi = results.data[index].aqi;
+      let far = getDistance(results.data[index].station.geo[0], results.data[index].station.geo[1]);
+      let judgement = quality(aqi);
+      showResult(name, aqi, far, judgement, 1);
+    }
+  }
+
+  function getDistance(placeLatitude, placeLongitude){
+    const radius = 6371e3; // metres
+    const diameter1 = placeLatitude * Math.PI/180;
+    const diameter2 = userLatitude * Math.PI/180;
+    const difference1 = (userLatitude - placeLatitude) * Math.PI/180;
+    const difference2 = (userLongitude - placeLongitude) * Math.PI/180;
+    const a = Math.sin(difference1/2) * Math.sin(difference1/2) +
+              Math.cos(diameter1) * Math.cos(diameter2) *
+              Math.sin(difference2/2) * Math.sin(difference2/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const d = radius * c / 1000; // in kilometres
+    return Math.round(d);
+  }
+
+  function quality(aqi){
+    if (aqi > 300){
+      return "hazardous";
+    }else if (aqi > 200) {
+      return "very unhealthy";
+    }else if (aqi > 150) {
+      return "unhealthy";
+    }else if (aqi > 100) {
+      return "unhealthy for sensitive groups";
+    }else if (aqi > 50) {
+      return "moderate";
+    }else {
+      return "good";
+    }
+  }
+
+  function showResult(name, aqi, far, judgement, searching){
+    let resultMessage;
+    if (searching == 2){
+      resultMessage = `The nearest station to your estimated position is in ${name}. The estimated AQI has a value of ${aqi}.`
+    }else{
+      resultMessage = `The estimated AQI for ${name} has a value of ${aqi}.`
+    }
+    resultMessage += ` The pollution rate is ${quality(aqi)}.`;
+    if (far != null || far != undefined) {
+      resultMessage += ` The estimated distance from your position is about ${far} kilometers.`;
+    }
+    document.getElementById("answer").innerHTML = resultMessage;
+  }
+
+  window.addEventListener('resize', repositionDiv);
+  document.getElementById("button-name").addEventListener("click", function(){
+    locating(`city=${document.getElementById("query").value}`, this.value);
+  });
+  document.getElementById("button-keyword").addEventListener("click", function(){
+    locating(`custom=${document.getElementById("query").value}`, this.value);
+  });
+  document.getElementById("button-geoloc").addEventListener("click", function(){
+    locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
+  });
+  document.getElementById("keyword-results").addEventListener("change", selecting);
+  document.getElementById("button-agree").addEventListener("click", function(){
+    userFeedback("yes", document.getElementById("question").value);
+  });
+  document.getElementById("button-deny").addEventListener("click", function(){
+    userFeedback("no", document.getElementById("question").value);
+  });
