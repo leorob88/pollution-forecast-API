@@ -5,13 +5,11 @@ var userLatitude, userLongitude, results;
 
 var helpUser = [
   "I couldn't find any stations for pollution detection in the location you searched for. Do you want to try a keyword search?",
-  "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?",
-  "I couldn't use your position to find any stations for pollution detection. Do you want to try a name search?"
+  "I couldn't find any stations for pollution detection. Do you want to try a geolocation search?"
 ];
 var unableToFind = [
   "I couldn't find any stations for pollution detection in the location you searched for.",
-  "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword.",
-  "I couldn't find any stations for pollution detection. Be sure to provide your current position"
+  "I couldn't find any stations for pollution detection. Be sure to provide a proper location keyword."
 ];
 
 const geoLocOptions = {
@@ -27,6 +25,42 @@ signal.then(pos => {
 }).catch(error => {
   console.log(error);
 });
+
+function findName(){
+  if(isInputOk("name")){
+    locating(`city=${document.getElementById("query").value}`, 0);
+  }else{
+    document.getElementById("answer").innerHTML = "The operation failed. Please, type any world location to search for.";
+  }
+}
+
+function findKeyword(){
+  if(isInputOk("name")){
+    locating(`custom=${document.getElementById("query").value}`, 1);
+  }else{
+    document.getElementById("answer").innerHTML = "The operation failed. Please, type any world location to search for.";
+  }
+}
+
+function findPosition(){
+  if(isInputOk("position")){
+    locating(`latit=${userLatitude}&longi=${userLongitude}`, 2);
+  }else{
+    document.getElementById("answer").innerHTML = "The operation failed. Please, provide your current position and reload this page.";
+  }
+}
+
+function isInputOk(userInput){
+  if(userInput == "name"){
+    if (document.getElementById("query").value != ""){
+      return true;
+    }
+  }else if(userInput == "position"){
+    if (userLatitude != undefined && userLongitude != undefined){
+      return true;
+    }
+  }
+}
 
 function locating(location, searching){
   resetValues();
@@ -49,10 +83,10 @@ function resetValues(){
 function getResult(data, searching){
   results = data;
   if (results == "error") {
-    document.getElementById("answer").innerHTML = `Something went wrong. Try reloading the page and repeating your search, please.`;
+    document.getElementById("answer").innerHTML = "Something went wrong. Try reloading the page and repeating your search, please.";
     return;
   }
-  if (results.data == "Unknown station" || (searching == 1 && results.data.length == 0)){
+  if ((searching == 0 && results.data == "Unknown station") || (searching == 1 && results.data.length == 0)){
     provideHelp(searching);
     return;
   }
@@ -94,12 +128,12 @@ function userFeedback(answer, searching){
     backToPage();
     return;
   }
-  let newSearching = searching == 2 ? 0 : Number(searching) + 1;
-  let newFetch = newSearching == 0 ? `city=${document.getElementById("query").value}` :
-                 newSearching == 1 ? `custom=${document.getElementById("query").value}` :
-                 `latit=${userLatitude}&longi=${userLongitude}`;
-  locating(newFetch, newSearching);
   backToPage();
+  if (searching == 0){
+    findKeyword();
+  }else if(searching == 1){
+    findPosition();
+  }
 }
 
 function backToPage(){
@@ -173,15 +207,9 @@ function showResult(name, aqi, far, judgement, searching){
 }
 
 window.addEventListener('resize', repositionDiv);
-document.getElementById("button-name").addEventListener("click", function(){
-  locating(`city=${document.getElementById("query").value}`, this.value);
-});
-document.getElementById("button-keyword").addEventListener("click", function(){
-  locating(`custom=${document.getElementById("query").value}`, this.value);
-});
-document.getElementById("button-geoloc").addEventListener("click", function(){
-  locating(`latit=${userLatitude}&longi=${userLongitude}`, this.value);
-});
+document.getElementById("button-name").addEventListener("click", findName);
+document.getElementById("button-keyword").addEventListener("click", findKeyword);
+document.getElementById("button-geoloc").addEventListener("click", findPosition);
 document.getElementById("keyword-results").addEventListener("change", selecting);
 document.getElementById("button-agree").addEventListener("click", function(){
   userFeedback("yes", document.getElementById("question").value);
