@@ -19,3 +19,4 @@ Then, if you want to find the nearest detection station to your device, just use
 How to test offline:
 
 After downloading the zip file, unzip it wherever you want and go to the .env.example file. Follow the instructions inside it and then open your console and go to the repository folder, then use "npm run dev" command to launch the API on your browser.
+Except these additional requirements, it works just like it does online.
